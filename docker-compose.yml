@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  php56-apache:
+    build:
+      context: php56-apache
+    ports:
+      - "50561:80"
+
+  php70-apache:
+    build:
+      context: php70-apache
+    ports:
+      - "50701:80"
+
+  php71-apache:
+    build:
+      context: php70-apache
+    ports:
+      - "50711:80"
+
+  php72-apache:
+    build:
+      context: php70-apache
+    ports:
+      - "50712:80"

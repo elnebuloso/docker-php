@@ -1,0 +1,45 @@
+# system
+FROM ubuntu:16.04
+MAINTAINER jeff.tunessen@gmail.com
+
+# install essentials
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends software-properties-common ca-certificates locales curl less nano cron logrotate \
+    && locale-gen en_US \
+    && locale-gen en_US.UTF-8 \
+    && locale-gen de_DE \
+    && locale-gen de_DE.UTF-8 \
+    && echo 'alias l="ls -alhF"' > /root/.bash_aliases \
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/cache/apt/archives/* \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/tmp/* \
+    && rm -rf /usr/share/doc/* \
+    && rm -rf /usr/share/man/* \
+    && rm -rf /usr/share/locale/* \
+    && rm -rf /tmp/*
+
+# set system-wide locale settings
+ENV LC_ALL en_US.UTF-8
+
+# https://launchpad.net/~ondrej/+archive/ubuntu/php
+# The main PPA for PHP
+RUN add-apt-repository ppa:ondrej/php
+
+# install php
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        apache2 \
+        libapache2-modsecurity \
+        php5.6 \
+        php5.6-cli \
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/cache/apt/archives/* \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/tmp/* \
+    && rm -rf /usr/share/doc/* \
+    && rm -rf /usr/share/man/* \
+    && rm -rf /usr/share/locale/* \
+    && rm -rf /tmp/*
