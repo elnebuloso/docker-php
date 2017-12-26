@@ -3,32 +3,44 @@ version: "2"
 services:
   php56-apache:
     build:
-      context: php56-apache
+      context: .
+      dockerfile: php56-apache/Dockerfile
     ports:
-      - "50561:80"
+      - "8056:80"
     volumes:
-      - ./main:/app/main
+      - ./www:/app/www
+    environment:
+      - APP_ENV=dev
 
   php70-apache:
     build:
-      context: php70-apache
+      context: .
+      dockerfile: php70-apache/Dockerfile
     ports:
-      - "50701:80"
+      - "8070:80"
     volumes:
-      - ./main:/app/main
+      - ./www:/app/www
+    environment:
+      - APP_ENV=dev
 
   php71-apache:
     build:
-      context: php70-apache
+      context: .
+      dockerfile: php71-apache/Dockerfile
     ports:
-      - "50711:80"
+      - "8071:80"
     volumes:
-      - ./main:/app/main
+      - ./www:/app/www
+    environment:
+      - APP_ENV=dev
 
   php72-apache:
     build:
-      context: php70-apache
+      context: .
+      dockerfile: php72-apache/Dockerfile
     ports:
-      - "50712:80"
+      - "8072:80"
     volumes:
-      - ./main:/app/main
+      - ./www:/app/www
+    environment:
+      - APP_ENV=dev

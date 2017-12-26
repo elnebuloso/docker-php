@@ -1,16 +1,7 @@
-<?php
-$script = trim($_SERVER["SCRIPT_NAME"], '/');
-
-// test index script against environment
-$matched = true;
-$matched = (getenv('APP_VHOST') === 'symfony' && getenv('APP_ENV') === 'prod' && $script !== 'app.php') ? false : true;
-$matched = (getenv('APP_VHOST') === 'symfony' && getenv('APP_ENV') === 'dev' && $script !== 'app_dev.php') ? false : true;
-?>
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <title>elnebuloso/php-apache</title>
+    <title>elnebuloso/php</title>
 </head>
 <body>
 
@@ -20,7 +11,7 @@ $matched = (getenv('APP_VHOST') === 'symfony' && getenv('APP_ENV') === 'dev' && 
         <tbody>
         <tr class="h">
             <td>
-                <h1 class="p">elnebuloso/php-apache</h1>
+                <h1 class="p">elnebuloso/php</h1>
             </td>
         </tr>
         </tbody>
@@ -34,20 +25,12 @@ $matched = (getenv('APP_VHOST') === 'symfony' && getenv('APP_ENV') === 'dev' && 
             <td class="v"><?php echo getenv('APP_ENV'); ?></td>
         </tr>
         <tr>
-            <td class="e">APP_VHOST</td>
-            <td class="v"><?php echo getenv('APP_VHOST'); ?></td>
-        </tr>
-        <tr>
-            <td class="e">APP_VHOST_FILE</td>
-            <td class="v"><?php echo getenv('APP_VHOST_FILE'); ?></td>
+            <td class="e">_SERVER["SCRIPT_NAME"]</td>
+            <td class="v"><?php echo $_SERVER["SCRIPT_NAME"]; ?></td>
         </tr>
         <tr>
             <td class="e">_SERVER["SCRIPT_FILENAME"]</td>
-            <td class="v" <?php echo (!$matched) ? 'style="background-color:#cc0000; color: white;"' : ''; ?>><?php echo (!$matched) ? '<strong>not matching environment</strong> ' : ''; ?><?php echo $_SERVER["SCRIPT_FILENAME"]; ?></td>
-        </tr>
-        <tr>
-            <td class="e">_SERVER["SCRIPT_NAME"]</td>
-            <td class="v" <?php echo (!$matched) ? 'style="background-color:#cc0000; color: white;"' : ''; ?>><?php echo (!$matched) ? '<strong>not matching environment</strong> ' : ''; ?><?php echo $_SERVER["SCRIPT_NAME"]; ?></td>
+            <td class="v"><?php echo $_SERVER["SCRIPT_FILENAME"]; ?></td>
         </tr>
         </tbody>
     </table>

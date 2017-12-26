@@ -38,6 +38,7 @@ RUN echo "install php" \
         libapache2-modsecurity \
         php5.6 \
         php5.6-cli \
+        php5.6-common \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/cache/apt/archives/* \
@@ -48,14 +49,16 @@ RUN echo "install php" \
     && rm -rf /usr/share/locale/* \
     && rm -rf /tmp/*
 
-ADD bin/ /usr/local/bin
-ADD conf/apache2/conf-available /etc/apache2/conf-available
-ADD conf/apache2/sites-available /etc/apache2/sites-available
+ADD docker/apache/bin/ /usr/local/bin
+ADD docker/apache/conf/apache2/conf-available /etc/apache2/conf-available
+ADD docker/apache/conf/apache2/sites-available /etc/apache2/sites-available
+ADD docker/apache/conf/php/docker.ini /etc/php/5.6/mods-available/docker.ini
 
 RUN echo "permissions" \
     && chmod +x /usr/local/bin/* \
     && chmod 0644 /etc/apache2/conf-available/* \
-    && chmod 0644 /etc/apache2/sites-available/*
+    && chmod 0644 /etc/apache2/sites-available/* \
+    && chmod 0644 /etc/php/5.6/mods-available/*
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
@@ -68,10 +71,15 @@ RUN echo "configure apache" \
     && a2enmod rewrite \
     && a2enconf security \
     && a2enconf servername \
+    && phpenmod docker \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log \
     && usermod -u 1000 $APACHE_RUN_USER \
     && groupmod -g 1000 $APACHE_RUN_GROUP
+
+# pre-defined apache2 site
+ENV APP_ENV prod
+RUN container-vhost standard
 
 EXPOSE 80
 

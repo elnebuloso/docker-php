@@ -1,9 +1,8 @@
-# system
 FROM ubuntu:16.04
 MAINTAINER jeff.tunessen@gmail.com
 
-# install essentials
-RUN apt-get update \
+RUN echo "install system essentials" \
+    && apt-get update \
     && apt-get install -y --no-install-recommends \
         software-properties-common \
         ca-certificates locales \
@@ -15,8 +14,8 @@ RUN apt-get update \
     && locale-gen de_DE \
     && locale-gen de_DE.UTF-8 \
     && echo 'alias l="ls -alhF"' > /root/.bash_aliases \
+    && apt-get -y autoclean \
     && apt-get -y autoremove \
-    && apt-get -y clean \
     && rm -rf /var/cache/apt/archives/* \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/tmp/* \
@@ -28,17 +27,18 @@ RUN apt-get update \
 # set system-wide locale settings
 ENV LC_ALL en_US.UTF-8
 
-# https://launchpad.net/~ondrej/+archive/ubuntu/php
-# The main PPA for PHP
-RUN add-apt-repository ppa:ondrej/php
+RUN echo "add package repositories" \
+    && add-apt-repository ppa:ondrej/php \
+    && add-apt-repository ppa:ondrej/pkg-gearman
 
-# install php
-RUN apt-get update \
+RUN echo "install php" \
+    && apt-get update \
     && apt-get install -y --no-install-recommends \
         apache2 \
         libapache2-modsecurity \
         php7.2 \
         php7.2-cli \
+        php7.2-common \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/cache/apt/archives/* \
@@ -48,3 +48,39 @@ RUN apt-get update \
     && rm -rf /usr/share/man/* \
     && rm -rf /usr/share/locale/* \
     && rm -rf /tmp/*
+
+ADD docker/apache/bin/ /usr/local/bin
+ADD docker/apache/conf/apache2/conf-available /etc/apache2/conf-available
+ADD docker/apache/conf/apache2/sites-available /etc/apache2/sites-available
+ADD docker/apache/conf/php/docker.ini /etc/php/7.2/mods-available/docker.ini
+
+RUN echo "permissions" \
+    && chmod +x /usr/local/bin/* \
+    && chmod 0644 /etc/apache2/conf-available/* \
+    && chmod 0644 /etc/apache2/sites-available/* \
+    && chmod 0644 /etc/php/7.2/mods-available/*
+
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
+ENV APACHE_LOCK_DIR /var/lock/apache2
+ENV APACHE_PID_FILE /var/run/apache2.pid
+
+RUN echo "configure apache" \
+    && a2enmod headers \
+    && a2enmod rewrite \
+    && a2enconf security \
+    && a2enconf servername \
+    && phpenmod docker \
+    && ln -sf /dev/stdout /var/log/apache2/access.log \
+    && ln -sf /dev/stderr /var/log/apache2/error.log \
+    && usermod -u 1000 $APACHE_RUN_USER \
+    && groupmod -g 1000 $APACHE_RUN_GROUP
+
+# pre-defined apache2 site
+ENV APP_ENV prod
+RUN container-vhost standard
+
+EXPOSE 80
+
+CMD ["container-run"]
