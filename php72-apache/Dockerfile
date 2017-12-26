@@ -4,7 +4,12 @@ MAINTAINER jeff.tunessen@gmail.com
 
 # install essentials
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends software-properties-common ca-certificates locales curl less nano cron logrotate \
+    && apt-get install -y --no-install-recommends \
+        software-properties-common \
+        ca-certificates locales \
+        curl \
+        less \
+        nano \
     && locale-gen en_US \
     && locale-gen en_US.UTF-8 \
     && locale-gen de_DE \

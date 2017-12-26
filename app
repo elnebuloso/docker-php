@@ -2,10 +2,10 @@
 
 case "$1" in
     start)
-        sh ./start.php56
-        sh ./start.php70
-        sh ./start.php71
-        sh ./start.php72
+        sh ./app start.php56
+        sh ./app start.php70
+        sh ./app start.php71
+        sh ./app start.php72
     ;;
 
     start.php56)

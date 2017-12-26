@@ -6,21 +6,29 @@ services:
       context: php56-apache
     ports:
       - "50561:80"
+    volumes:
+      - ./main:/app/main
 
   php70-apache:
     build:
       context: php70-apache
     ports:
       - "50701:80"
+    volumes:
+      - ./main:/app/main
 
   php71-apache:
     build:
       context: php70-apache
     ports:
       - "50711:80"
+    volumes:
+      - ./main:/app/main
 
   php72-apache:
     build:
       context: php70-apache
     ports:
       - "50712:80"
+    volumes:
+      - ./main:/app/main
