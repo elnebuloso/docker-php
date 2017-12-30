@@ -51,9 +51,9 @@ case "$1" in
     *)
         clear
         echo ""
-        echo " - start   Start all containers"
-        echo " - stop    Stop all containers"
-        echo " - push    Push Images"
+        echo " - start  Start all containers"
+        echo " - stop   Stop all containers"
+        echo " - push   Push Images"
         echo ""
     ;;
 esac
