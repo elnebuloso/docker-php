@@ -20,25 +20,32 @@ case "$1" in
         docker-compose down --remove-orphans
     ;;
 
-    create)
-        docker build --pull -t php56-apache-latest -f php56-apache/Dockerfile .
-        docker build --pull -t php70-apache-latest -f php70-apache/Dockerfile .
-        docker build --pull -t php71-apache-latest -f php71-apache/Dockerfile .
-        docker build --pull -t php72-apache-latest -f php72-apache/Dockerfile .
-
+    push)
         clear
 
-        echo "php56-apache"
-        docker run php56-apache php --version && echo ""
+        docker tag php56-apache elnebuloso/php:5.6.32-apache
+        docker tag php56-apache elnebuloso/php:5.6-apache
+        docker push elnebuloso/php:5.6.32-apache
+        docker push elnebuloso/php:5.6-apache
+        echo ""
 
-        echo "php70-apache"
-        docker run php70-apache php --version && echo ""
+        docker tag php70-apache elnebuloso/php:7.0.26-apache
+        docker tag php70-apache elnebuloso/php:7.0-apache
+        docker push elnebuloso/php:7.0.26-apache
+        docker push elnebuloso/php:7.0-apache
+        echo ""
 
-        echo "php71-apache"
-        docker run php71-apache php --version && echo ""
+        docker tag php71-apache elnebuloso/php:7.1.12-apache
+        docker tag php71-apache elnebuloso/php:7.1-apache
+        docker push elnebuloso/php:7.1.12-apache
+        docker push elnebuloso/php:7.1-apache
+        echo ""
 
-        echo "php72-apache"
-        docker run php72-apache php --version && echo ""
+        docker tag php72-apache elnebuloso/php:7.2.0-apache
+        docker tag php72-apache elnebuloso/php:7.2-apache
+        docker push elnebuloso/php:7.2.0-apache
+        docker push elnebuloso/php:7.2-apache
+        echo ""
     ;;
 
     *)
@@ -46,7 +53,7 @@ case "$1" in
         echo ""
         echo " - start   Start all containers"
         echo " - stop    Stop all containers"
-        echo " - create  Create Images"
+        echo " - push    Push Images"
         echo ""
     ;;
 esac

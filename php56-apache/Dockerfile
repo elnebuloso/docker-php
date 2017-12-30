@@ -97,7 +97,7 @@ RUN echo "configure apache" \
 
 # pre-defined apache2 site
 ENV APP_ENV prod
-RUN container-vhost symfony3
+RUN container-vhost standard
 
 EXPOSE 80
 
