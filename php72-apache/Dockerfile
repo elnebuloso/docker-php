@@ -1,6 +1,10 @@
 FROM ubuntu:16.04
 MAINTAINER jeff.tunessen@gmail.com
 
+# terminal
+ENV TERM linux
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN echo "install system essentials" \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -39,6 +43,19 @@ RUN echo "install php" \
         php7.2 \
         php7.2-cli \
         php7.2-common \
+        php7.2-curl \
+        php7.2-gd \
+        php7.2-imagick \
+        php7.2-intl \
+        php7.2-mbstring \
+        php7.2-memcached \
+        php7.2-mongodb \
+        php7.2-mysql \
+        php7.2-sqlite3 \
+        php7.2-ssh \
+        php7.2-xml \
+        php7.2-yaml \
+        php7.2-zip \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/cache/apt/archives/* \
@@ -74,6 +91,7 @@ RUN echo "configure apache" \
     && phpenmod docker \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log \
+    && rm -rf /var/www/* \
     && usermod -u 1000 $APACHE_RUN_USER \
     && groupmod -g 1000 $APACHE_RUN_GROUP
 

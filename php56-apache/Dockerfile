@@ -1,6 +1,10 @@
 FROM ubuntu:16.04
 MAINTAINER jeff.tunessen@gmail.com
 
+# terminal
+ENV TERM linux
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN echo "install system essentials" \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -39,6 +43,19 @@ RUN echo "install php" \
         php5.6 \
         php5.6-cli \
         php5.6-common \
+        php5.6-curl \
+        php5.6-gd \
+        php5.6-imagick \
+        php5.6-intl \
+        php5.6-mbstring \
+        php5.6-memcached \
+        php5.6-mongodb \
+        php5.6-mysql \
+        php5.6-sqlite3 \
+        php5.6-ssh \
+        php5.6-xml \
+        php5.6-yaml \
+        php5.6-zip \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/cache/apt/archives/* \
@@ -74,12 +91,13 @@ RUN echo "configure apache" \
     && phpenmod docker \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log \
+    && rm -rf /var/www/* \
     && usermod -u 1000 $APACHE_RUN_USER \
     && groupmod -g 1000 $APACHE_RUN_GROUP
 
 # pre-defined apache2 site
 ENV APP_ENV prod
-RUN container-vhost standard
+RUN container-vhost symfony3
 
 EXPOSE 80
 
