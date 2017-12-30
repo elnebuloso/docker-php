@@ -2,11 +2,9 @@
 
 docker php + webserver
 
-
 ## docker hub
 
 See Supported Tags at https://hub.docker.com/r/elnebuloso/php/tags/
-
 
 #### Supported tags and respective `Dockerfile` links
 
