@@ -7,7 +7,7 @@ node {
         php = "5.6"
         php_latest = "${php}-apache"
 
-        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm -f apache/Dockerfile apache")
+        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f apache/Dockerfile apache")
         image.inside() {
             php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
             php_version = "${php_version}-apache"
@@ -26,7 +26,7 @@ node {
         php = "7.0"
         php_latest = "${php}-apache"
 
-        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm -f apache/Dockerfile apache")
+        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f apache/Dockerfile apache")
         image.inside() {
             php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
             php_version = "${php_version}-apache"
@@ -45,7 +45,7 @@ node {
         php = "7.1"
         php_latest = "${php}-apache"
 
-        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm -f apache/Dockerfile apache")
+        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f apache/Dockerfile apache")
         image.inside() {
             php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
             php_version = "${php_version}-apache"
@@ -64,7 +64,7 @@ node {
         php = "7.2"
         php_latest = "${php}-apache"
 
-        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm -f apache/Dockerfile apache")
+        image = docker.build("elnebuloso/php:${php_latest}", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f apache/Dockerfile apache")
         image.inside() {
             php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
             php_version = "${php_version}-apache"
