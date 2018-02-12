@@ -8,7 +8,7 @@ node {
         image = docker.build("elnebuloso/php:${php}", "--build-arg PHP_VERSION=5.6 --pull --rm -f Dockerfile .")
 
         image.inside() {
-            php_version = sh(script: "php --version | grep -Po "^PHP (\\d+\\.)+\\d+" | sed 's!PHP !!g'", returnStdout: true).trim()
+            php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
             php_version = "${php_version}-apache"
         }
 
