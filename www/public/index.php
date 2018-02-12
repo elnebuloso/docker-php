@@ -17,12 +17,38 @@
         </tbody>
     </table>
 
+    <h2>webserver</h2>
+    <table>
+        <tbody>
+        <tr>
+            <td class="e">user/uid</td>
+            <td class="v"><?php echo posix_getuid(); ?></td>
+        </tr>
+        <tr>
+            <td class="e">user/name</td>
+            <td class="v"><?php echo posix_getpwuid(posix_getuid())['name']; ?></td>
+        </tr>
+        <tr>
+            <td class="e">group/gid</td>
+            <td class="v"><?php echo posix_getgid(); ?></td>
+        </tr>
+        <tr>
+            <td class="e">group/name</td>
+            <td class="v"><?php echo posix_getgrgid(posix_getgid())['name']; ?></td>
+        </tr>
+        </tbody>
+    </table>
+
     <h2>environment</h2>
     <table>
         <tbody>
         <tr>
             <td class="e">APP_ENV</td>
             <td class="v"><?php echo getenv('APP_ENV'); ?></td>
+        </tr>
+        <tr>
+            <td class="e">_SERVER["APP_ENV"]</td>
+            <td class="v"><?php echo $_SERVER["APP_ENV"]; ?></td>
         </tr>
         <tr>
             <td class="e">_SERVER["SCRIPT_NAME"]</td>

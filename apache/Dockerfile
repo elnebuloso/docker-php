@@ -72,6 +72,9 @@ ADD docker/conf/apache2/conf-available /etc/apache2/conf-available
 ADD docker/conf/apache2/sites-available /etc/apache2/sites-available
 ADD docker/conf/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
 
+ARG APACHE_RUN_UID
+ARG APACHE_RUN_GID
+
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
@@ -83,6 +86,7 @@ RUN echo "configure webserver" \
     && chmod 0644 /etc/apache2/conf-available/* \
     && chmod 0644 /etc/apache2/sites-available/* \
     && chmod 0644 /etc/php/${PHP_VERSION}/mods-available/* \
+    && echo 'PassEnv APP_ENV' > /etc/apache2/conf-enabled/expose-env.conf \
     && a2enmod headers \
     && a2enmod rewrite \
     && a2enconf security \
@@ -90,9 +94,9 @@ RUN echo "configure webserver" \
     && phpenmod docker \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log \
-    && rm -rf /var/www/* \
-    && usermod -u 1000 $APACHE_RUN_USER \
-    && groupmod -g 1000 $APACHE_RUN_GROUP
+    && if [ "${APACHE_RUN_UID}" != "" ]; then usermod -u ${APACHE_RUN_UID} ${APACHE_RUN_USER} ; fi \
+    && if [ "${APACHE_RUN_GID}" != "" ]; then groupmod -g ${APACHE_RUN_GID} ${APACHE_RUN_GROUP} ; fi \
+    && rm -rf /var/www/*
 
 WORKDIR /var/www
 
