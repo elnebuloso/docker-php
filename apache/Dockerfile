@@ -82,7 +82,7 @@ RUN echo "configure webserver" \
     && chmod +x /usr/local/bin/* \
     && chmod 0644 /etc/apache2/conf-available/* \
     && chmod 0644 /etc/apache2/sites-available/* \
-    && chmod 0644 /etc/php/${PHP_VERSION}/mods-available/*
+    && chmod 0644 /etc/php/${PHP_VERSION}/mods-available/* \
     && a2enmod headers \
     && a2enmod rewrite \
     && a2enconf security \
@@ -96,7 +96,7 @@ RUN echo "configure webserver" \
 
 WORKDIR /var/www
 
-# pre-defined apache2 site
+# predefined apache2 site
 ENV APP_ENV prod
 RUN container-vhost standard
 
