@@ -12,7 +12,7 @@ case "$1" in
         docker-compose exec php56-apache php --version && echo ""
         docker-compose exec php70-apache php --version && echo ""
         docker-compose exec php71-apache php --version && echo ""
-        docker-compose exec php72-apache php --version && echo ""v
+        docker-compose exec php72-apache php --version && echo ""
         docker-compose ps && echo ""
     ;;
 

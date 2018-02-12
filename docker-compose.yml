@@ -3,9 +3,8 @@ version: "2"
 services:
   php56-apache:
     build:
-      context: .
-      dockerfile: php56-apache/Dockerfile
-    image: php56-apache
+      context: apache
+      dockerfile: Dockerfile
     ports:
       - "8056:80"
     volumes:
@@ -15,9 +14,8 @@ services:
 
   php70-apache:
     build:
-      context: .
-      dockerfile: php70-apache/Dockerfile
-    image: php70-apache
+      context: apache
+      dockerfile: Dockerfile
     ports:
       - "8070:80"
     volumes:
@@ -27,9 +25,8 @@ services:
 
   php71-apache:
     build:
-      context: .
-      dockerfile: php71-apache/Dockerfile
-    image: php71-apache
+      context: apache
+      dockerfile: Dockerfile
     ports:
       - "8071:80"
     volumes:
@@ -39,9 +36,8 @@ services:
 
   php72-apache:
     build:
-      context: .
-      dockerfile: php72-apache/Dockerfile
-    image: php72-apache
+      context: apache
+      dockerfile: Dockerfile
     ports:
       - "8072:80"
     volumes:

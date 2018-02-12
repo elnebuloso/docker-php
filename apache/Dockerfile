@@ -1,7 +1,6 @@
 FROM ubuntu:16.04
 MAINTAINER jeff.tunessen@gmail.com
 
-# terminal
 ENV TERM linux
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -35,27 +34,29 @@ RUN echo "add package repositories" \
     && add-apt-repository ppa:ondrej/php \
     && add-apt-repository ppa:ondrej/pkg-gearman
 
+ARG PHP_VERSION
+
 RUN echo "install php" \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         apache2 \
         libapache2-modsecurity \
-        php7.0 \
-        php7.0-cli \
-        php7.0-common \
-        php7.0-curl \
-        php7.0-gd \
-        php7.0-imagick \
-        php7.0-intl \
-        php7.0-mbstring \
-        php7.0-memcached \
-        php7.0-mongodb \
-        php7.0-mysql \
-        php7.0-sqlite3 \
-        php7.0-ssh \
-        php7.0-xml \
-        php7.0-yaml \
-        php7.0-zip \
+        php${PHP_VERSION} \
+        php${PHP_VERSION}-cli \
+        php${PHP_VERSION}-common \
+        php${PHP_VERSION}-curl \
+        php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-imagick \
+        php${PHP_VERSION}-intl \
+        php${PHP_VERSION}-mbstring \
+        php${PHP_VERSION}-memcached \
+        php${PHP_VERSION}-mongodb \
+        php${PHP_VERSION}-mysql \
+        php${PHP_VERSION}-sqlite3 \
+        php${PHP_VERSION}-ssh \
+        php${PHP_VERSION}-xml \
+        php${PHP_VERSION}-yaml \
+        php${PHP_VERSION}-zip \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/cache/apt/archives/* \
@@ -66,16 +67,10 @@ RUN echo "install php" \
     && rm -rf /usr/share/locale/* \
     && rm -rf /tmp/*
 
-ADD docker/apache/bin/ /usr/local/bin
-ADD docker/apache/conf/apache2/conf-available /etc/apache2/conf-available
-ADD docker/apache/conf/apache2/sites-available /etc/apache2/sites-available
-ADD docker/apache/conf/php/docker.ini /etc/php/7.0/mods-available/docker.ini
-
-RUN echo "permissions" \
-    && chmod +x /usr/local/bin/* \
-    && chmod 0644 /etc/apache2/conf-available/* \
-    && chmod 0644 /etc/apache2/sites-available/* \
-    && chmod 0644 /etc/php/7.0/mods-available/*
+ADD docker/bin/ /usr/local/bin
+ADD docker/conf/apache2/conf-available /etc/apache2/conf-available
+ADD docker/conf/apache2/sites-available /etc/apache2/sites-available
+ADD docker/conf/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
@@ -83,7 +78,11 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
 
-RUN echo "configure apache" \
+RUN echo "configure webserver" \
+    && chmod +x /usr/local/bin/* \
+    && chmod 0644 /etc/apache2/conf-available/* \
+    && chmod 0644 /etc/apache2/sites-available/* \
+    && chmod 0644 /etc/php/${PHP_VERSION}/mods-available/*
     && a2enmod headers \
     && a2enmod rewrite \
     && a2enconf security \
@@ -94,6 +93,8 @@ RUN echo "configure apache" \
     && rm -rf /var/www/* \
     && usermod -u 1000 $APACHE_RUN_USER \
     && groupmod -g 1000 $APACHE_RUN_GROUP
+
+WORKDIR /var/www
 
 # pre-defined apache2 site
 ENV APP_ENV prod
