@@ -100,8 +100,6 @@ RUN echo "configure webserver" \
 
 WORKDIR /var/www
 
-# predefined apache2 site
-ENV APP_ENV prod
 RUN container-vhost standard
 
 EXPOSE 80

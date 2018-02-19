@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.3.0] - 2017-02-19
+### Changed
+- removed set APP_ENV from Dockerfile
+
+
 ## [1.2.0] - 2017-02-12
 ### Changed
 - Added APP_ENV to $_SERVER

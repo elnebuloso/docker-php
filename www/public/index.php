@@ -43,14 +43,6 @@
     <table>
         <tbody>
         <tr>
-            <td class="e">APP_ENV</td>
-            <td class="v"><?php echo getenv('APP_ENV'); ?></td>
-        </tr>
-        <tr>
-            <td class="e">_SERVER["APP_ENV"]</td>
-            <td class="v"><?php echo $_SERVER["APP_ENV"]; ?></td>
-        </tr>
-        <tr>
             <td class="e">_SERVER["SCRIPT_NAME"]</td>
             <td class="v"><?php echo $_SERVER["SCRIPT_NAME"]; ?></td>
         </tr>

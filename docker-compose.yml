@@ -11,8 +11,6 @@ services:
         APACHE_RUN_GID: 1056
     ports:
       - 8056:80
-    environment:
-      - APP_ENV=dev
     volumes:
       - ./www:/var/www
 
@@ -26,8 +24,6 @@ services:
         APACHE_RUN_GID: 1070
     ports:
       - 8070:80
-    environment:
-      - APP_ENV=dev
     volumes:
       - ./www:/var/www
 
@@ -41,8 +37,6 @@ services:
         APACHE_RUN_GID: 1071
     ports:
       - 8071:80
-    environment:
-      - APP_ENV=dev
     volumes:
       - ./www:/var/www
 
@@ -56,7 +50,5 @@ services:
         APACHE_RUN_GID: 1072
     ports:
       - 8072:80
-    environment:
-      - APP_ENV=dev
     volumes:
       - ./www:/var/www

@@ -28,17 +28,17 @@ Run the following Commands in your extending Dockerfile to use the shipped vhost
 
 ```
 # predefined apache2 site
-ENV APP_ENV prod
 RUN container-vhost standard
 ```
 
 ```
 # predefined apache2 site
-ENV APP_ENV prod
 RUN container-vhost symfony3
 ```
 
 ### environments
+
+- set this in your dockerfile
 
 #### APP_ENV
 
