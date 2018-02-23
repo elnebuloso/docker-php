@@ -13,8 +13,6 @@ See Supported Tags at https://hub.docker.com/r/elnebuloso/php/tags/
 - [`7.1-apache` `7.1.x-apache` (Dockerfile)](https://github.com/elnebuloso/docker-php/blob/master/apache/Dockerfile)
 - [`7.2-apache` `7.2.x-apache` (Dockerfile)](https://github.com/elnebuloso/docker-php/blob/master/apache/Dockerfile)
 
-See full project details at https://github.com/elnebuloso/docker-php
-
 ## php apache container
 
 - enabled apache mod headers
