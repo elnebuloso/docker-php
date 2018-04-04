@@ -6,13 +6,6 @@ docker php + webserver
 
 See Supported Tags at https://hub.docker.com/r/elnebuloso/php/tags/
 
-#### Supported tags and respective `Dockerfile` links
-
-- [`5.6-apache` `5.6.x-apache` (Dockerfile)](https://github.com/elnebuloso/docker-php/blob/master/apache/Dockerfile)
-- [`7.0-apache` `7.0.x-apache` (Dockerfile)](https://github.com/elnebuloso/docker-php/blob/master/apache/Dockerfile)
-- [`7.1-apache` `7.1.x-apache` (Dockerfile)](https://github.com/elnebuloso/docker-php/blob/master/apache/Dockerfile)
-- [`7.2-apache` `7.2.x-apache` (Dockerfile)](https://github.com/elnebuloso/docker-php/blob/master/apache/Dockerfile)
-
 ## php apache container
 
 - enabled apache mod headers
