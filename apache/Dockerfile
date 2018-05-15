@@ -72,9 +72,6 @@ ADD docker/conf/apache2/conf-available /etc/apache2/conf-available
 ADD docker/conf/apache2/sites-available /etc/apache2/sites-available
 ADD docker/conf/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
 
-ARG APACHE_RUN_UID
-ARG APACHE_RUN_GID
-
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
@@ -94,8 +91,6 @@ RUN echo "configure webserver" \
     && phpenmod docker \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log \
-    && if [ "${APACHE_RUN_UID}" != "" ]; then usermod -u ${APACHE_RUN_UID} ${APACHE_RUN_USER} ; fi \
-    && if [ "${APACHE_RUN_GID}" != "" ]; then groupmod -g ${APACHE_RUN_GID} ${APACHE_RUN_GROUP} ; fi \
     && rm -rf /var/www/*
 
 WORKDIR /var/www
