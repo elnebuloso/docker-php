@@ -96,8 +96,6 @@ RUN echo "configure webserver" \
 
 WORKDIR /var/www
 
-RUN container-vhost standard
-
 EXPOSE 80
 
 CMD ["container-run"]

@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.6.0] - 2018-05-22
+### Changed
+- removed pre-defined vhost configurations
+
+
 ## [1.5.0] - 2018-05-22
 ### Changed
 - added new LogFormat GDPR combined_noip
