@@ -88,6 +88,7 @@ RUN echo "configure webserver" \
     && a2enmod rewrite \
     && a2enconf security \
     && a2enconf servername \
+    && a2enconf log-formats \
     && phpenmod docker \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
     && ln -sf /dev/stderr /var/log/apache2/error.log \
