@@ -83,11 +83,11 @@ RUN echo "configure webserver" \
     && chmod 0644 /etc/apache2/conf-available/* \
     && chmod 0644 /etc/apache2/sites-available/* \
     && chmod 0644 /etc/php/${PHP_VERSION}/mods-available/* \
-    && echo 'PassEnv APP_ENV' > /etc/apache2/conf-enabled/expose-env.conf \
     && a2enmod headers \
     && a2enmod rewrite \
     && a2enconf security \
     && a2enconf servername \
+    && a2enconf expose-env \
     && a2enconf log-formats \
     && phpenmod docker \
     && ln -sf /dev/stdout /var/log/apache2/access.log \
