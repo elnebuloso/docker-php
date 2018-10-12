@@ -32,15 +32,15 @@ case "$1" in
 
         echo ""
         docker-compose exec php70-apache php --version
-        docker-compose exec php70-cli php --version
+        docker-compose run php70-cli php --version
 
         echo ""
         docker-compose exec php71-apache php --version
-        docker-compose exec php71-cli php --version
+        docker-compose run php71-cli php --version
 
         echo ""
         docker-compose exec php72-apache php --version
-        docker-compose exec php72-cli php --version
+        docker-compose run php72-cli php --version
     ;;
 
     stop)
