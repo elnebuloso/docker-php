@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.8.0] - 2018-10-12
+### Changed
+- added APP_VERSION to expose-env.conf
+- added php-cli container version
+
+
 ## [1.7.0] - 2018-05-22
 ### Changed
 - added expose-env.conf
