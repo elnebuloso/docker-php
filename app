@@ -1,56 +1,27 @@
 #/bin/bash
 
 case "$1" in
-    start)
-        echo ""
-        docker-compose pull
+    build)
+        docker build --pull --rm --tag docker-php-apache-$2 --build-arg PHP_VERSION=$2 --file Dockerfile.apache .
+        docker build --pull --rm --tag docker-php-cli-$2 --build-arg PHP_VERSION=$2 --file Dockerfile.cli .
+
+        docker run --detach --name=docker-php-apache-$2 --publish 80 --volume $(pwd)/www:/var/www docker-php-apache-$2
+        docker port docker-php-apache-$2
+
+        echo " ---> apache"
+        docker run docker-php-apache-$2 php --version
 
         echo ""
-        docker-compose up --build --remove-orphans -d php56-apache
-        docker-compose build php56-cli
-
-        echo ""
-        docker-compose up --build --remove-orphans -d php70-apache
-        docker-compose build php70-cli
-
-        echo ""
-        docker-compose up --build --remove-orphans -d php71-apache
-        docker-compose build php71-cli
-
-        echo ""
-        docker-compose up --build --remove-orphans -d php72-apache
-        docker-compose build php72-cli
-
-        echo ""
-        docker-compose ps
-    ;;
-
-    verify)
-        echo ""
-        docker-compose exec php56-apache php --version
-        docker-compose run php56-cli php --version
-
-        echo ""
-        docker-compose exec php70-apache php --version
-        docker-compose run php70-cli php --version
-
-        echo ""
-        docker-compose exec php71-apache php --version
-        docker-compose run php71-cli php --version
-
-        echo ""
-        docker-compose exec php72-apache php --version
-        docker-compose run php72-cli php --version
+        echo " ---> cli"
+        docker run docker-php-cli-$2 php --version
     ;;
 
     stop)
-        echo ""
-        docker-compose down --remove-orphans
+        docker ps --format '{{.Names}}' | grep "^docker-php-" | awk '{print $1}' | xargs -I {} docker stop {}
     ;;
 
     *)
-        echo " - start"
+        echo " - build"
         echo " - stop"
-        echo " - verify"
     ;;
 esac

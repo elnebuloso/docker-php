@@ -145,6 +145,42 @@ pipeline {
                 }
             }
         }
+
+        stage('build php 7.3') {
+            steps {
+                script {
+                    php = "7.3"
+
+                    image = docker.build("elnebuloso/php:${php}-apache", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.apache .")
+                    image.inside() {
+                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
+                    }
+
+                    semver = semver(php_version)
+
+                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
+                        image.push("${semver.get('tag_revision')}-apache")
+                        image.push("${semver.get('tag_minor')}-apache")
+                    }
+                }
+
+                script {
+                    php = "7.3"
+
+                    image = docker.build("elnebuloso/php:${php}-cli", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.cli .")
+                    image.inside() {
+                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
+                    }
+
+                    semver = semver(php_version)
+
+                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
+                        image.push("${semver.get('tag_revision')}-cli")
+                        image.push("${semver.get('tag_minor')}-cli")
+                    }
+                }
+            }
+        }
 	}
 
 	post {
