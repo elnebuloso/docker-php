@@ -1,13 +1,16 @@
 pipeline {
     agent any
 
+    parameters {
+        choice(choices: '5.6\n7.0\n7.1\n7.2\n7.3', description: 'Select the PHP version to build', name: 'php')
+        choice(choices: 'apache\ncli', description: 'Select the container type', name: 'type')
+    }
+
 	stages {
-        stage('build php 5.6') {
+        stage('build) {
             steps {
                 script {
-                    php = "5.6"
-
-                    image = docker.build("elnebuloso/php:${php}-apache", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.apache .")
+                    image = docker.build("elnebuloso/php:${php}-${type}", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.${type} .")
                     image.inside() {
                         php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
                     }
@@ -15,168 +18,8 @@ pipeline {
                     semver = semver(php_version)
 
                     docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-apache")
-                        image.push("${semver.get('tag_minor')}-apache")
-                    }
-                }
-
-                script {
-                    php = "5.6"
-
-                    image = docker.build("elnebuloso/php:${php}-cli", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.cli .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-cli")
-                        image.push("${semver.get('tag_minor')}-cli")
-                    }
-                }
-            }
-        }
-
-        stage('build php 7.0') {
-            steps {
-                script {
-                    php = "7.0"
-
-                    image = docker.build("elnebuloso/php:${php}-apache", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.apache .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-apache")
-                        image.push("${semver.get('tag_minor')}-apache")
-                    }
-                }
-
-                script {
-                    php = "7.0"
-
-                    image = docker.build("elnebuloso/php:${php}-cli", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.cli .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-cli")
-                        image.push("${semver.get('tag_minor')}-cli")
-                    }
-                }
-            }
-        }
-
-        stage('build php 7.1') {
-            steps {
-                script {
-                    php = "7.1"
-
-                    image = docker.build("elnebuloso/php:${php}-apache", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.apache .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-apache")
-                        image.push("${semver.get('tag_minor')}-apache")
-                    }
-                }
-
-                script {
-                    php = "7.1"
-
-                    image = docker.build("elnebuloso/php:${php}-cli", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.cli .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-cli")
-                        image.push("${semver.get('tag_minor')}-cli")
-                    }
-                }
-            }
-        }
-
-        stage('build php 7.2') {
-            steps {
-                script {
-                    php = "7.2"
-
-                    image = docker.build("elnebuloso/php:${php}-apache", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.apache .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-apache")
-                        image.push("${semver.get('tag_minor')}-apache")
-                    }
-                }
-
-                script {
-                    php = "7.2"
-
-                    image = docker.build("elnebuloso/php:${php}-cli", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.cli .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-cli")
-                        image.push("${semver.get('tag_minor')}-cli")
-                    }
-                }
-            }
-        }
-
-        stage('build php 7.3') {
-            steps {
-                script {
-                    php = "7.3"
-
-                    image = docker.build("elnebuloso/php:${php}-apache", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.apache .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-apache")
-                        image.push("${semver.get('tag_minor')}-apache")
-                    }
-                }
-
-                script {
-                    php = "7.3"
-
-                    image = docker.build("elnebuloso/php:${php}-cli", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.cli .")
-                    image.inside() {
-                        php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
-                    }
-
-                    semver = semver(php_version)
-
-                    docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){
-                        image.push("${semver.get('tag_revision')}-cli")
-                        image.push("${semver.get('tag_minor')}-cli")
+                        image.push("${semver.get('tag_patch')}-${type}")
+                        image.push("${semver.get('tag_minor')}-${type}")
                     }
                 }
             }
@@ -195,21 +38,21 @@ pipeline {
  * @return map
  */
 def semver(version) {
-    def parser = /(?<major>\d+).(?<minor>\d+).(?<revision>\d+)/
+    def parser = /(?<major>\d+).(?<minor>\d+).(?<patch>\d+)/
     def match = (version =~ parser)
 
     if(match.matches()) {
         def major = match[0][1]
         def minor = match[0][2]
-        def revision = match[0][3]
+        def patch = match[0][3]
 
         def tag_major = "${major}"
         def tag_minor = "${major}.${minor}"
-        def tag_revision = "${major}.${minor}.${revision}"
+        def tag_patch = "${major}.${minor}.${patch}"
 
         match = null
 
-        def map = [tag_major: tag_major, tag_minor: tag_minor, tag_revision: tag_revision]
+        def map = [tag_major: tag_major, tag_minor: tag_minor, tag_patch: tag_patch]
 
         return map
     }

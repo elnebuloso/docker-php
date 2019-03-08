@@ -1,3 +1,5 @@
+<?php setlocale(LC_ALL, 'de_DE.UTF-8'); ?>
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -43,6 +45,10 @@
     <table>
         <tbody>
         <tr>
+            <td class="e">_SERVER["APP_ENV"]</td>
+            <td class="v"><?php echo $_SERVER["APP_ENV"]; ?></td>
+        </tr>
+        <tr>
             <td class="e">_SERVER["SCRIPT_NAME"]</td>
             <td class="v"><?php echo $_SERVER["SCRIPT_NAME"]; ?></td>
         </tr>
@@ -59,6 +65,10 @@
         <tr>
             <td class="e">Timezone</td>
             <td class="v"><?php echo (new DateTime())->getTimezone()->getName(); ?></td>
+        </tr>
+        <tr>
+            <td class="e">Date</td>
+            <td class="v"><?php echo (new DateTime())->format('Y-m-d H:i:s'); ?></td>
         </tr>
         <?php foreach (range(1, 12) as $month): ?>
             <?php $datetime = new DateTime(date('Y') . "-$month-01 00:00:00"); ?>

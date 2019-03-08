@@ -56,5 +56,7 @@ ADD docker/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
 RUN echo "configure" \
     && phpenmod docker
 
+ENV APP_ENV dev
+
 WORKDIR /var/www
 CMD ["bash"]

@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.9.0] - 2019-03-08
+### Changed
+- removed APP_VERSION from expose-env.conf
+- updated dockerfiles
+- updated locales
+
+
 ## [1.8.0] - 2018-10-12
 ### Changed
 - added APP_VERSION to expose-env.conf
