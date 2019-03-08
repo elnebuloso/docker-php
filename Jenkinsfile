@@ -15,6 +15,9 @@ pipeline {
                         php_version = sh(script: "php --version | grep -Po '^PHP (\\d+\\.)+\\d+' | sed 's!PHP !!g'", returnStdout: true).trim()
                     }
 
+                    docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/app zemanlx/container-structure-test:v1.7.0-alpine test --image elnebuloso/php:${php}-${type} --config /app/tests/structure.yaml
+                    docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/app zemanlx/container-structure-test:v1.7.0-alpine test --image elnebuloso/php:${php}-${type} --config /app/tests/structure-${type}.yaml
+
                     semver = semver(php_version)
 
                     docker.withRegistry("https://registry.hub.docker.com", '061d45cc-bc11-4490-ac21-3b2276f1dd05'){

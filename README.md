@@ -35,6 +35,10 @@ docker-compose down --remove-orphans
 docker-compose ps
 ```
 
+docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/app zemanlx/container-structure-test:v1.7.0-alpine test --image php56-apache --config /app/tests/structure.yaml
+docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/app zemanlx/container-structure-test:v1.7.0-alpine test --image php56-apache --config /app/tests/structure-apache.yaml
+docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/app zemanlx/container-structure-test:v1.7.0-alpine test --image php56-apache --config /app/tests/structure-cli.yaml
+
 ### testing hosts
 
 - http://php56.local.entwickl.de/
