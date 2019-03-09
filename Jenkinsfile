@@ -7,7 +7,7 @@ pipeline {
     }
 
 	stages {
-        stage('build) {
+        stage('build') {
             steps {
                 script {
                     image = docker.build("elnebuloso/php:${php}-${type}", "--build-arg PHP_VERSION=${php} --pull --rm --no-cache -f Dockerfile.${type} .")
