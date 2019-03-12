@@ -12,16 +12,58 @@ services:
     image: php71-apache
     build:
       context: .
+      dockerfile: Dockerfile.apache
       args:
         PHP_VERSION: 7.1-apache
     volumes:
       - ./main:/var/www
     environment:
       VIRTUAL_HOST: php71.local.entwickl.de
-#
-#  php71-cli:
-#    image: php71-cli
+
+  php71-cli:
+    image: php71-cli
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+      args:
+        PHP_VERSION: 7.1-cli
+
+#  php72-apache:
+#    image: php72-apache
 #    build:
 #      context: .
+#      dockerfile: Dockerfile.apache
 #      args:
-#        PHP_VERSION: 7.1-cli
+#        PHP_VERSION: 7.2-apache
+#    volumes:
+#      - ./main:/var/www
+#    environment:
+#      VIRTUAL_HOST: php72.local.entwickl.de
+#
+#  php72-cli:
+#    image: php72-cli
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.cli
+#      args:
+#        PHP_VERSION: 7.2-cli
+#
+#  php73-apache:
+#    image: php73-apache
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.apache
+#      args:
+#        PHP_VERSION: 7.3-apache
+#    volumes:
+#      - ./main:/var/www
+#    environment:
+#      VIRTUAL_HOST: php73.local.entwickl.de
+#
+#  php73-cli:
+#    image: php73-cli
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.cli
+#      args:
+#        PHP_VERSION: 7.3-cli

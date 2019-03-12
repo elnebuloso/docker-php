@@ -13,7 +13,6 @@ RUN echo "install system" \
         locales \
         locales-all \
         curl \
-        nano \
     && locale-gen en_US \
     && locale-gen en_US.UTF-8 \
     && locale-gen de_DE \
@@ -30,6 +29,9 @@ ENV LC_ALL en_US.UTF-8
 ENV APP_ENV dev
 
 ADD docker/php/docker.ini $PHP_INI_DIR/conf.d/
+
+WORKDIR /var/www
+
 ADD docker/apache/conf-available /etc/apache2/conf-available
 ADD docker/apache/sites-available /etc/apache2/sites-available
 
@@ -44,4 +46,15 @@ RUN echo "configure" \
     && a2enconf log-formats \
     && rm -rf /var/www/*
 
-WORKDIR /var/www
+ADD docker/bin /usr/local/bin
+
+RUN echo "configure /usr/local/bin" \
+    && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && chmod +x /usr/local/bin/*
+
+#RUN apt-get update && apt-get install -y \
+#    zlib1g-dev \
+#    libzip-dev
+
+#RUN echo "install php extensions" \
+#    && docker-php-ext-install opcache

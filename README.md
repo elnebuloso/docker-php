@@ -2,30 +2,17 @@
 
 ## docker hub
 
-See Supported Tags at https://hub.docker.com/r/elnebuloso/php/tags/
+- see Supported Tags at https://hub.docker.com/r/elnebuloso/php/tags/
+- based on https://hub.docker.com/_/php
 
-## php + apache
+### features with apache
 
-- php56-apache
-- php70-apache
-- php71-apache
-- php72-apache
-- php73-apache
-
-### features
-
-- enabled apache mod headers
-- enabled apache mod rewrite
-- enabled apache mod security
-- enabled vhost config for all new php frameworks (symfony4, laravel, etc.)
-
-## php cli
-
-- php56-cli
-- php70-cli
-- php71-cli
-- php72-cli
-- php73-cli
+- default enabled apache mod headers
+- default enabled apache mod rewrite
+- default enabled apache mod security
+- default enabled vhost config for all new php frameworks (symfony4, laravel, etc.)
+- json logging format for access and error logs
+- default disabled remote ip in access and error logs
 
 ## development
 
