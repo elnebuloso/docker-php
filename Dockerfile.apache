@@ -47,14 +47,14 @@ RUN echo "configure" \
     && rm -rf /var/www/*
 
 ADD docker/bin /usr/local/bin
+ADD docker/php/extensions /opt/php/extensions
 
-RUN echo "configure /usr/local/bin" \
+RUN echo "configure php helpers" \
     && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
-    && chmod +x /usr/local/bin/*
+    && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && chmod +x /usr/local/bin/* \
+    && chmod +x /opt/php/extensions/*
 
-#RUN apt-get update && apt-get install -y \
-#    zlib1g-dev \
-#    libzip-dev
-
-#RUN echo "install php extensions" \
-#    && docker-php-ext-install opcache
+RUN install-php-extension opcache
+RUN install-php-extension xdebug
+RUN docker-php-ext-enable xdebug
