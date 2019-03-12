@@ -41,6 +41,8 @@ RUN echo "configure php helpers" \
     && chmod +x /usr/local/bin/* \
     && chmod +x /opt/php/extensions/*
 
-RUN install-php-extension opcache
-RUN install-php-extension xdebug
-RUN docker-php-ext-enable xdebug
+#RUN phpext install opcache
+#RUN phpext install xdebug
+
+#ENTRYPOINT ["phpext-entrypoint"]
+ENTRYPOINT ["docker-php-entrypoint"]
