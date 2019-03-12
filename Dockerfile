@@ -11,6 +11,7 @@ RUN echo "install system" \
         software-properties-common \
         ca-certificates \
         locales \
+        locales-all \
         curl \
         nano \
     && locale-gen en_US \
@@ -25,12 +26,14 @@ RUN echo "install system" \
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+ENV APP_ENV dev
 
+ADD docker/php/docker.ini $PHP_INI_DIR/conf.d/
 ADD docker/apache/conf-available /etc/apache2/conf-available
 ADD docker/apache/sites-available /etc/apache2/sites-available
 
 RUN echo "configure" \
-    && chmod +x /usr/local/bin/* \
     && chmod 0644 /etc/apache2/conf-available/* \
     && chmod 0644 /etc/apache2/sites-available/* \
     && a2enmod headers \
@@ -39,6 +42,6 @@ RUN echo "configure" \
     && a2enconf servername \
     && a2enconf expose-env \
     && a2enconf log-formats \
-    && ln -sf /dev/stdout /var/log/apache2/access.log \
-    && ln -sf /dev/stderr /var/log/apache2/error.log \
     && rm -rf /var/www/*
+
+WORKDIR /var/www
