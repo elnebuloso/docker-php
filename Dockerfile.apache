@@ -57,6 +57,7 @@ RUN echo "configure php helpers" \
 
 RUN phpext install opcache
 RUN phpext install xdebug
+RUN phpext install memcached
 
 ENTRYPOINT ["phpext-entrypoint"]
 CMD ["apache2-foreground"]
