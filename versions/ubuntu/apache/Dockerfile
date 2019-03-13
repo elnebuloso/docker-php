@@ -68,12 +68,6 @@ ADD docker/apache/conf-available /etc/apache2/conf-available
 ADD docker/apache/sites-available /etc/apache2/sites-available
 ADD docker/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
 
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-ENV APACHE_LOCK_DIR /var/lock/apache2
-ENV APACHE_PID_FILE /var/run/apache2.pid
-
 RUN echo "configure" \
     && chmod +x /usr/local/bin/* \
     && chmod 0644 /etc/apache2/conf-available/* \
