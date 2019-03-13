@@ -7,4 +7,8 @@
 
     <import file="/srv/phing/commons/standard.xml"/>
 
+    <target name="ubuntu:build">
+        <exec command="docker-compose up --build --remove-orphans -d" passthru="true" checkreturn="true" level="info" dir="${project.root}/versions/ubuntu"/>
+    </target>
+
 </project>

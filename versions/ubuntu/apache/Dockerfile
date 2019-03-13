@@ -56,7 +56,7 @@ ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
 
 RUN echo "configure php" \
-    && chmod +x /usr/local/bin/*
+    && chmod +x /usr/local/bin/* \
     && phpenmod docker
 
 RUN echo "install apache" \
