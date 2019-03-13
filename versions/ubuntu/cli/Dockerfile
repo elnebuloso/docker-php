@@ -52,8 +52,8 @@ RUN echo "install php" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
+ADD cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN echo "configure php" \
     && chmod +x /usr/local/bin/* \

@@ -52,13 +52,6 @@ RUN echo "install php" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
-
-RUN echo "configure php" \
-    && chmod +x /usr/local/bin/* \
-    && phpenmod docker
-
 RUN echo "install apache" \
     && add-apt-repository ppa:ondrej/apache2 \
     && apt-get update \
@@ -71,11 +64,17 @@ RUN echo "install apache" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-ADD conf-available /etc/apache2/conf-available
-ADD sites-available /etc/apache2/sites-available
+ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
+ADD apache/apache-foreground.sh /usr/local/bin/apache-foreground
+ADD apache/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ADD apache/conf-available /etc/apache2/conf-available
+ADD apache/sites-available /etc/apache2/sites-available
+
+RUN echo "configure php" \
+    && chmod +x /usr/local/bin/* \
+    && phpenmod docker
 
 RUN echo "configure apache" \
-    && chmod +x /usr/local/bin/* \
     && chmod 0644 /etc/apache2/conf-available/* \
     && chmod 0644 /etc/apache2/sites-available/* \
     && chmod 0644 /etc/php/${PHP_VERSION}/mods-available/* \
@@ -98,4 +97,4 @@ WORKDIR /var/www
 
 ENTRYPOINT ["docker-entrypoint"]
 
-CMD ["apache2-foreground"]
+CMD ["apache-foreground"]
