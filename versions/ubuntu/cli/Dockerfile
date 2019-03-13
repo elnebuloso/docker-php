@@ -59,4 +59,5 @@ RUN echo "configure" \
 ENV APP_ENV dev
 
 WORKDIR /var/www
-CMD ["bash"]
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["php", "-a"]

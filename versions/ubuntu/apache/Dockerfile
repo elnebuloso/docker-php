@@ -94,4 +94,5 @@ ENV APP_ENV dev
 
 EXPOSE 80
 WORKDIR /var/www
-CMD ["container-run"]
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["apache2-foreground"]
