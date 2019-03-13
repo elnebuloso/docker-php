@@ -10,6 +10,7 @@ RUN echo "install system" \
         software-properties-common \
         ca-certificates \
         locales \
+        locales-all \
         curl \
         nano \
     && locale-gen en_US \
@@ -51,6 +52,13 @@ RUN echo "install php" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
+ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
+
+RUN echo "configure php" \
+    && chmod +x /usr/local/bin/*
+    && phpenmod docker
+
 RUN echo "install apache" \
     && add-apt-repository ppa:ondrej/apache2 \
     && apt-get update \
@@ -63,12 +71,10 @@ RUN echo "install apache" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-ADD docker/apache/bin /usr/local/bin
-ADD docker/apache/conf-available /etc/apache2/conf-available
-ADD docker/apache/sites-available /etc/apache2/sites-available
-ADD docker/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
+ADD conf-available /etc/apache2/conf-available
+ADD sites-available /etc/apache2/sites-available
 
-RUN echo "configure" \
+RUN echo "configure apache" \
     && chmod +x /usr/local/bin/* \
     && chmod 0644 /etc/apache2/conf-available/* \
     && chmod 0644 /etc/apache2/sites-available/* \
@@ -79,14 +85,17 @@ RUN echo "configure" \
     && a2enconf servername \
     && a2enconf expose-env \
     && a2enconf log-formats \
-    && phpenmod docker \
-    && ln -sf /dev/stdout /var/log/apache2/access.log \
-    && ln -sf /dev/stderr /var/log/apache2/error.log \
+    && ln -sfT /dev/stderr /var/log/apache2/error.log \
+    && ln -sfT /dev/stdout /var/log/apache2/access.log \
+    && ln -sfT /dev/stderr /var/log/apache2/other_vhosts_access.log \
     && rm -rf /var/www/*
 
 ENV APP_ENV dev
 
 EXPOSE 80
+
 WORKDIR /var/www
+
 ENTRYPOINT ["docker-entrypoint"]
+
 CMD ["apache2-foreground"]

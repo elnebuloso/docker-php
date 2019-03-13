@@ -10,6 +10,7 @@ RUN echo "install system" \
         software-properties-common \
         ca-certificates \
         locales \
+        locales-all \
         curl \
         nano \
     && locale-gen en_US \
@@ -51,13 +52,17 @@ RUN echo "install php" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-ADD docker/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
+ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
 
-RUN echo "configure" \
+RUN echo "configure php" \
+    && chmod +x /usr/local/bin/*
     && phpenmod docker
 
 ENV APP_ENV dev
 
 WORKDIR /var/www
+
 ENTRYPOINT ["docker-entrypoint"]
+
 CMD ["php", "-a"]
