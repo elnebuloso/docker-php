@@ -1,0 +1,7 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+  - name: "PHP Interpreter"
+    command: "php"
+    args: ["-v"]
+    expectedOutput: ['PHP .* \(cli\)', 'Zend OPcache']

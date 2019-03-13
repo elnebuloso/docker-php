@@ -1,0 +1,109 @@
+version: "2"
+
+services:
+  proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  php56-apache:
+    image: php56-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.apache
+      args:
+        PHP_VERSION: 5.6
+    volumes:
+      - ./main:/var/www
+    environment:
+      VIRTUAL_HOST: php56.local.entwickl.de
+
+  php56-cli:
+    image: php56-cli
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+      args:
+        PHP_VERSION: 5.6
+
+  php70-apache:
+    image: php70-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.apache
+      args:
+        PHP_VERSION: 7.0
+    volumes:
+      - ./main:/var/www
+    environment:
+      VIRTUAL_HOST: php70.local.entwickl.de
+
+  php70-cli:
+    image: php70-cli
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+      args:
+        PHP_VERSION: 7.0
+
+  php71-apache:
+    image: php71-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.apache
+      args:
+        PHP_VERSION: 7.1
+    volumes:
+      - ./main:/var/www
+    environment:
+      VIRTUAL_HOST: php71.local.entwickl.de
+
+  php71-cli:
+    image: php71-cli
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+      args:
+        PHP_VERSION: 7.1
+
+  php72-apache:
+    image: php72-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.apache
+      args:
+        PHP_VERSION: 7.2
+    volumes:
+      - ./main:/var/www
+    environment:
+      VIRTUAL_HOST: php72.local.entwickl.de
+
+  php72-cli:
+    image: php72-cli
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+      args:
+        PHP_VERSION: 7.2
+
+  php73-apache:
+    image: php73-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.apache
+      args:
+        PHP_VERSION: 7.3
+    volumes:
+      - ./main:/var/www
+    environment:
+      VIRTUAL_HOST: php73.local.entwickl.de
+
+  php73-cli:
+    image: php73-cli
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+      args:
+        PHP_VERSION: 7.3
