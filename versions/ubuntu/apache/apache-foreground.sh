@@ -2,7 +2,7 @@
 set -e
 
 # Note: we don't just use "apache2ctl" here because it itself is just a shell-script wrapper around apache2 which provides extra functionality like "apache2ctl start" for launching apache2 in the background.
-# (also, when run as "apache2ctl <apache args>", it does not use "exec", which leaves an undesirable resident shell process)
+# also, when run as "apache2ctl <apache args>", it does not use "exec", which leaves an undesirable resident shell process
 
 : ${APACHE_CONFDIR:=/etc/apache2}
 : ${APACHE_ENVVARS:=${APACHE_CONFDIR}/envvars}
@@ -20,7 +20,7 @@ rm -f "$APACHE_PID_FILE"
 for e in "${!APACHE_@}"; do
 	if [[ "$e" == *_DIR ]] && [[ "${!e}" == /* ]]; then
 		# handle "/var/lock" being a symlink to "/run/lock", but "/run/lock" not existing beforehand, so "/var/lock/something" fails to mkdir
-		#   mkdir: cannot create directory '/var/lock': File exists
+		# mkdir: cannot create directory '/var/lock': File exists
 		dir="${!e}"
 		while [[ "$dir" != "$(dirname "$dir")" ]]; do
 			dir="$(dirname "$dir")"
