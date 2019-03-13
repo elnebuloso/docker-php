@@ -2,13 +2,32 @@
 
 <project name="application" basedir="." default="commons:help">
 
+
     <property file="build.properties"/>
     <property file="build.properties.local"/>
 
+
     <import file="/srv/phing/commons/standard.xml"/>
+
 
     <target name="ubuntu:build">
         <exec command="docker-compose up --build --remove-orphans -d" passthru="true" checkreturn="true" level="info" dir="${project.root}/versions/ubuntu"/>
     </target>
+
+
+    <target name="ubuntu:build">
+        <exec command="docker-compose down --remove-orphans" passthru="true" checkreturn="true" level="info" dir="${project.root}/versions/ubuntu"/>
+    </target>
+
+
+    <target name="ubuntu:exec">
+        <exec command="docker-compose exec ${dist} bash" passthru="true" checkreturn="true" level="info" dir="${project.root}/versions/ubuntu"/>
+    </target>
+
+
+    <target name="ubuntu:run">
+        <exec command="docker-compose run ${dist} bash" passthru="true" checkreturn="true" level="info" dir="${project.root}/versions/ubuntu"/>
+    </target>
+
 
 </project>
