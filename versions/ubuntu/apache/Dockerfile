@@ -47,6 +47,7 @@ RUN echo "install php" \
         php${PHP_VERSION}-xml \
         php${PHP_VERSION}-yaml \
         php${PHP_VERSION}-zip \
+    && if [ "${PHP_VERSION}" = "7.1" ]; then apt-get install -y --no-install-recommends php${PHP_VERSION}-sodium ; fi \
     && apt-get -y autoremove \
     && apt-get -y autoclean \
     && apt-get -y clean \
