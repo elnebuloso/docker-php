@@ -16,6 +16,7 @@ pipeline {
         stage('build') {
             steps {
                 sh "docker login --username ${REGISTRY_CREDENTIALS_USR} --password ${REGISTRY_CREDENTIALS_PSW}"
+                sh "phing run:7.1-cli -Dcommand=push"
                 sh "phing run:7.1-cli-ubuntu -Dcommand=push"
             }
         }

@@ -163,6 +163,28 @@
         ]]></adhoc-task>
 
         <semver version="${container.php.version}" outputProperty="semver"/>
+
+        <if>
+            <equals arg1="${release}" arg2="official"/>
+            <then>
+                <property name="docker.hub.tag1" value="elnebuloso/${project.name}:${semver}-${type}" override="true"/>
+                <property name="docker.hub.tag2" value="elnebuloso/${project.name}:${version}-${type}" override="true"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${release}" arg2="ubuntu"/>
+            <then>
+                <property name="docker.hub.tag1" value="elnebuloso/${project.name}:${semver}-${type}-${release}" override="true"/>
+                <property name="docker.hub.tag2" value="elnebuloso/${project.name}:${version}-${type}-${release}" override="true"/>
+            </then>
+        </if>
+
+        <exec command="docker tag ${image} ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+        <exec command="docker tag ${image} ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+
+        <!--<exec command="docker push ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
+        <!--<exec command="docker push ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
     </target>
 
 
