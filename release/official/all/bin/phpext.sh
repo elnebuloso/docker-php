@@ -7,7 +7,7 @@
 
 ##########################################################################################################
 
-phpVersion=${PHP_VERSION%.*}
+PHPEXT_PHP_VERSION=${PHP_VERSION%.*}
 phpCommand=${1:-install}
 phpExtension=${2}
 phpInstaller="/opt/php/extensions/7.x/${phpExtension}"
@@ -15,8 +15,8 @@ phpInstaller="/opt/php/extensions/7.x/${phpExtension}"
 ##########################################################################################################
 
 # check if php extension installer is available
-if [[ -f "/opt/php/extensions/${phpVersion}/${phpExtension}" ]]; then
-    phpInstaller="/opt/php/extensions/${phpVersion}/${phpExtension}"
+if [[ -f "/opt/php/extensions/${PHPEXT_PHP_VERSION}/${phpExtension}" ]]; then
+    phpInstaller="/opt/php/extensions/${PHPEXT_PHP_VERSION}/${phpExtension}"
 fi
 
 if [[ ! -f "${phpInstaller}" ]]; then
