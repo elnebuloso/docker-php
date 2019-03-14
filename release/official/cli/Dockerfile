@@ -42,4 +42,4 @@ WORKDIR /var/www
 
 ENTRYPOINT ["phpext-entrypoint"]
 
-CMD ["php", "-a"]
+CMD ["php", "--version"]

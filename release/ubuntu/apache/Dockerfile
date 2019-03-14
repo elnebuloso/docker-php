@@ -65,11 +65,11 @@ RUN echo "install apache" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
-ADD apache/apache-foreground.sh /usr/local/bin/apache-foreground
-ADD apache/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-ADD apache/conf-available /etc/apache2/conf-available
-ADD apache/sites-available /etc/apache2/sites-available
+ADD release/ubuntu/all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
+ADD release/ubuntu/apache/apache-foreground.sh /usr/local/bin/apache-foreground
+ADD release/ubuntu/apache/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ADD release/ubuntu/apache/conf-available /etc/apache2/conf-available
+ADD release/ubuntu/apache/sites-available /etc/apache2/sites-available
 
 RUN echo "configure php" \
     && chmod +x /usr/local/bin/* \

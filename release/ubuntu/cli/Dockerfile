@@ -53,8 +53,8 @@ RUN echo "install php" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-ADD all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
-ADD cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ADD release/ubuntu/all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
+ADD release/ubuntu/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN echo "configure php" \
     && chmod +x /usr/local/bin/* \
@@ -66,4 +66,4 @@ WORKDIR /var/www
 
 ENTRYPOINT ["docker-entrypoint"]
 
-CMD ["php", "-a"]
+CMD ["php", "--version"]

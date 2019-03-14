@@ -1,5 +1,8 @@
 schemaVersion: "2.0.0"
 
+metadataTest:
+  cmd: ["php", "--version"]
+
 commandTests:
   - name: "PHP Interpreter"
     command: "php"
