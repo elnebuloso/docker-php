@@ -6,7 +6,7 @@ pipeline {
     agent {
         docker {
             image 'elnebuloso/phing'
-            args '-u 1:1 --user 1 --volume /var/run/docker.sock:/var/run/docker.sock --env-file $WORKSPACE/build.env'
+            args '--volume /var/run/docker.sock:/var/run/docker.sock --env-file $WORKSPACE/build.env'
             reuseNode false
             alwaysPull true
         }
