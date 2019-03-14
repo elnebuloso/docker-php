@@ -27,95 +27,105 @@
 
 
     <target name="build:7.1-apache">
-        <phingcall target="build:official:image">
-            <property name="php.version" value="7.1-apache"/>
+        <phingcall target="build:image">
+            <property name="php.release" value="official"/>
+            <property name="php.version" value="7.1"/>
             <property name="php.type" value="apache"/>
-            <property name="php.os" value="official"/>
         </phingcall>
     </target>
 
 
     <target name="build:7.1-cli">
-        <phingcall target="build:official:image">
-            <property name="php.version" value="7.1-cli"/>
+        <phingcall target="build:image">
+            <property name="php.release" value="official"/>
+            <property name="php.version" value="7.1"/>
             <property name="php.type" value="cli"/>
-            <property name="php.os" value="official"/>
         </phingcall>
     </target>
 
 
     <target name="build:7.1-apache-ubuntu">
-        <phingcall target="build:ubuntu:image">
+        <phingcall target="build:image">
+            <property name="php.release" value="ubuntu"/>
             <property name="php.version" value="7.1"/>
             <property name="php.type" value="apache"/>
-            <property name="php.os" value="ubuntu"/>
         </phingcall>
     </target>
 
 
     <target name="build:7.1-cli-ubuntu">
-        <phingcall target="build:ubuntu:image">
+        <phingcall target="build:image">
+            <property name="php.release" value="ubuntu"/>
             <property name="php.version" value="7.1"/>
             <property name="php.type" value="cli"/>
-            <property name="php.os" value="ubuntu"/>
         </phingcall>
     </target>
 
 
     <target name="build:7.2-apache-ubuntu">
-        <phingcall target="build:ubuntu:image">
+        <phingcall target="build:image">
+            <property name="php.release" value="ubuntu"/>
             <property name="php.version" value="7.2"/>
             <property name="php.type" value="apache"/>
-            <property name="php.os" value="ubuntu"/>
         </phingcall>
     </target>
 
 
     <target name="build:7.2-cli-ubuntu">
-        <phingcall target="build:ubuntu:image">
+        <phingcall target="build:image">
+            <property name="php.release" value="ubuntu"/>
             <property name="php.version" value="7.2"/>
             <property name="php.type" value="cli"/>
-            <property name="php.os" value="ubuntu"/>
         </phingcall>
     </target>
 
 
     <target name="build:7.3-apache-ubuntu">
-        <phingcall target="build:ubuntu:image">
+        <phingcall target="build:image">
+            <property name="php.release" value="ubuntu"/>
             <property name="php.version" value="7.3"/>
             <property name="php.type" value="apache"/>
-            <property name="php.os" value="ubuntu"/>
         </phingcall>
     </target>
 
 
     <target name="build:7.3-cli-ubuntu">
-        <phingcall target="build:ubuntu:image">
+        <phingcall target="build:image">
+            <property name="php.release" value="ubuntu"/>
             <property name="php.version" value="7.3"/>
             <property name="php.type" value="cli"/>
-            <property name="php.os" value="ubuntu"/>
-        </phingcall>
-    </target>
-
-
-    <target name="build:official:image">
-        <phingcall target="build:image">
-            <property name="image" value="${project.name}:${php.version}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="build:ubuntu:image">
-        <phingcall target="build:image">
-            <property name="image" value="${project.name}:${php.version}-${php.type}-${php.os}"/>
         </phingcall>
     </target>
 
 
     <target name="build:image">
-        <exec command="docker build --pull --tag ${image} --build-arg PHP_VERSION=${php.version} --file ${php.type}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${project.root}/release/${php.os}"/>
-        <!--<exec command="docker run -i &#45;&#45;rm -v /var/run/docker.sock:/var/run/docker.sock -v ${project.root}:/app zemanlx/container-structure-test:v1.7.0-alpine test &#45;&#45;image ${image} &#45;&#45;config /app/release/${php.os}/all/tests/structure.yaml" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
-        <!--<exec command="docker run -i &#45;&#45;rm -v /var/run/docker.sock:/var/run/docker.sock -v ${project.root}:/app zemanlx/container-structure-test:v1.7.0-alpine test &#45;&#45;image ${image} &#45;&#45;config /app/release/${php.os}/all/tests/structure-${php.type}.yaml" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
+        <if>
+            <equals arg1="${php.release}" arg2="official"/>
+            <then>
+                <echo message="official"/>
+                <property name="php.image.version" value="${php.version}-${php.type}"/>
+                <property name="php.image" value="${project.name}:${php.version}-${php.type}"/>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${php.release}" arg2="ubuntu"/>
+            <then>
+                <echo message="ubuntu"/>
+                <property name="php.image.version" value="${php.version}"/>
+                <property name="php.image" value="${project.name}:${php.version}-${php.type}-${php.release}"/>
+            </then>
+        </if>
+
+        <echo message="php.release:       ${php.release}"/>
+        <echo message="php.version:       ${php.version}"/>
+        <echo message="php.type:          ${php.type}"/>
+        <echo message="php.image.version: ${php.image.version}"/>
+        <echo message="php.image:         ${php.image}"/>
+        <echo message=""/>
+
+        <exec command="docker build --pull --tag ${php.image} --build-arg PHP_VERSION=${php.image.version} --file release/${php.release}/${php.type}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+        <!--<exec command="docker run -i &#45;&#45;rm -v /var/run/docker.sock:/var/run/docker.sock -v ${project.root}:/app zemanlx/container-structure-test:v1.7.0-alpine test &#45;&#45;image ${image} &#45;&#45;config /app/release/${php.release}/all/tests/structure.yaml" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
+        <!--<exec command="docker run -i &#45;&#45;rm -v /var/run/docker.sock:/var/run/docker.sock -v ${project.root}:/app zemanlx/container-structure-test:v1.7.0-alpine test &#45;&#45;image ${image} &#45;&#45;config /app/release/${php.release}/all/tests/structure-${php.type}.yaml" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
     </target>
 
 

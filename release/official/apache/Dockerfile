@@ -28,9 +28,9 @@ ENV LC_ALL en_US.UTF-8
 
 ENV APP_ENV dev
 
-ADD all/bin /usr/local/bin
-ADD all/php/extensions /opt/php/extensions
-ADD all/php/docker.ini $PHP_INI_DIR/conf.d
+ADD release/official/all/bin /usr/local/bin
+ADD release/official/all/php/extensions /opt/php/extensions
+ADD release/official/all/php/docker.ini $PHP_INI_DIR/conf.d
 
 RUN echo "configure php helpers" \
     && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
@@ -38,8 +38,8 @@ RUN echo "configure php helpers" \
     && chmod +x /usr/local/bin/* \
     && chmod +x /opt/php/extensions/*
 
-ADD apache/conf-available /etc/apache2/conf-available
-ADD apache/sites-available /etc/apache2/sites-available
+ADD release/official/apache/conf-available /etc/apache2/conf-available
+ADD release/official/apache/sites-available /etc/apache2/sites-available
 
 RUN echo "configure apache" \
     && chmod 0644 /etc/apache2/conf-available/* \
