@@ -10,9 +10,7 @@ RUN echo "install system" \
         software-properties-common \
         ca-certificates \
         locales \
-        locales-all \
         curl \
-        nano \
     && locale-gen en_US \
     && locale-gen en_US.UTF-8 \
     && locale-gen de_DE \
