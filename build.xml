@@ -183,8 +183,8 @@
         <exec command="docker tag ${image} ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
         <exec command="docker tag ${image} ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
 
-        <!--<exec command="docker push ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
-        <!--<exec command="docker push ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>-->
+        <exec command="docker push ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+        <exec command="docker push ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
     </target>
 
 
