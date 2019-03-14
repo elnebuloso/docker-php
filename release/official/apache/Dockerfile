@@ -52,9 +52,10 @@ RUN echo "configure apache" \
     && a2enconf log-formats \
     && rm -rf /var/www/*
 
+RUN phpext install opcache
+
 WORKDIR /var/www
 
 ENTRYPOINT ["phpext-entrypoint"]
 
 CMD ["apache2-foreground"]
-

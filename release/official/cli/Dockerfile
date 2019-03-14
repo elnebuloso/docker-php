@@ -38,6 +38,8 @@ RUN echo "configure php helpers" \
     && chmod +x /usr/local/bin/* \
     && chmod +x /opt/php/extensions/*
 
+RUN phpext install opcache
+
 WORKDIR /var/www
 
 ENTRYPOINT ["phpext-entrypoint"]
