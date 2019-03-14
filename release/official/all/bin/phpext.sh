@@ -8,24 +8,24 @@
 ##########################################################################################################
 
 PHPEXT_PHP_VERSION=${PHP_VERSION%.*}
-phpCommand=${1:-install}
-phpExtension=${2}
-phpInstaller="/opt/php/extensions/7.x/${phpExtension}"
+PHPEXT_COMMAND=${1:-install}
+PHPEXT_EXTENSION=${2}
+PHPEXT_EXTENSION_INSTALLER="/opt/php/extensions/7.x/${PHPEXT_EXTENSION}"
 
 ##########################################################################################################
 
 # check if php extension installer is available
-if [[ -f "/opt/php/extensions/${PHPEXT_PHP_VERSION}/${phpExtension}" ]]; then
-    phpInstaller="/opt/php/extensions/${PHPEXT_PHP_VERSION}/${phpExtension}"
+if [[ -f "/opt/php/extensions/${PHPEXT_PHP_VERSION}/${PHPEXT_EXTENSION}" ]]; then
+    PHPEXT_EXTENSION_INSTALLER="/opt/php/extensions/${PHPEXT_PHP_VERSION}/${PHPEXT_EXTENSION}"
 fi
 
-if [[ ! -f "${phpInstaller}" ]]; then
+if [[ ! -f "${PHPEXT_EXTENSION_INSTALLER}" ]]; then
     exit 1
 fi
 
 ##########################################################################################################
 
 # run php extension installer
-${phpInstaller} ${phpCommand}
+${PHPEXT_EXTENSION_INSTALLER} ${PHPEXT_COMMAND}
 
 ##########################################################################################################

@@ -32,10 +32,16 @@ ADD all/bin /usr/local/bin
 ADD all/php/extensions /opt/php/extensions
 ADD all/php/docker.ini $PHP_INI_DIR/conf.d
 
+RUN echo "configure php helpers" \
+    && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && chmod +x /usr/local/bin/* \
+    && chmod +x /opt/php/extensions/*
+
 ADD apache/conf-available /etc/apache2/conf-available
 ADD apache/sites-available /etc/apache2/sites-available
 
-RUN echo "configure" \
+RUN echo "configure apache" \
     && chmod 0644 /etc/apache2/conf-available/* \
     && chmod 0644 /etc/apache2/sites-available/* \
     && a2enmod headers \
@@ -46,29 +52,9 @@ RUN echo "configure" \
     && a2enconf log-formats \
     && rm -rf /var/www/*
 
+WORKDIR /var/www
 
+ENTRYPOINT ["phpext-entrypoint"]
 
-#ADD docker/php/docker.ini $PHP_INI_DIR/conf.d/
-#
-#WORKDIR /var/www
-#
-#ADD docker/apache/conf-available /etc/apache2/conf-available
-#ADD docker/apache/sites-available /etc/apache2/sites-available
-#
+CMD ["apache2-foreground"]
 
-#
-#ADD docker/bin /usr/local/bin
-#ADD docker/php/extensions /opt/php/extensions
-#
-#RUN echo "configure php helpers" \
-#    && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
-#    && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
-#    && chmod +x /usr/local/bin/* \
-#    && chmod +x /opt/php/extensions/*
-#
-#RUN phpext install opcache
-#RUN phpext install xdebug
-#RUN phpext install memcached
-#
-#ENTRYPOINT ["phpext-entrypoint"]
-#CMD ["apache2-foreground"]

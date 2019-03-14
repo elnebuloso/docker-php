@@ -32,24 +32,14 @@ ADD all/bin /usr/local/bin
 ADD all/php/extensions /opt/php/extensions
 ADD all/php/docker.ini $PHP_INI_DIR/conf.d
 
+RUN echo "configure php helpers" \
+    && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && chmod +x /usr/local/bin/* \
+    && chmod +x /opt/php/extensions/*
 
+WORKDIR /var/www
 
-#ADD docker/php/docker.ini $PHP_INI_DIR/conf.d/
-#
-#WORKDIR /var/www
-#
-#ADD docker/bin /usr/local/bin
-#ADD docker/php/extensions /opt/php/extensions
-#
-#RUN echo "configure php helpers" \
-#    && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
-#    && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
-#    && chmod +x /usr/local/bin/* \
-#    && chmod +x /opt/php/extensions/*
-#
-#RUN phpext install opcache
-#RUN phpext install xdebug
-#RUN phpext install memcached
-#
-#ENTRYPOINT ["phpext-entrypoint"]
-#CMD ["php", "-a"]
+ENTRYPOINT ["phpext-entrypoint"]
+
+CMD ["php", "-a"]
