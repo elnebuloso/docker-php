@@ -10,3 +10,41 @@ commandTests:
     command: "php"
     args: ["-v"]
     expectedOutput: ['PHP .* \(cli\)', 'Zend OPcache']
+
+  - name: "PHP Extensions"
+    command: "php"
+    args: ["-m"]
+    expectedOutput:
+      - Core
+      - ctype
+      - curl
+      - date
+      - dom
+      - fileinfo
+      - filter
+      - ftp
+      - hash
+      - iconv
+      - json
+      - libxml
+      - mbstring
+      - mysqlnd
+      - openssl
+      - pcre
+      - PDO
+      - pdo_sqlite
+      - Phar
+      - posix
+      - readline
+      - Reflection
+      - session
+      - SimpleXML
+      - SPL
+      - sqlite3
+      - standard
+      - tokenizer
+      - xml
+      - xmlreader
+      - xmlwriter
+      - Zend OPcache
+      - zlib

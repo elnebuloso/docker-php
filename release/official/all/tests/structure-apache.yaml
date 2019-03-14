@@ -1,6 +1,7 @@
 schemaVersion: "2.0.0"
 
 metadataTest:
+  cmd: ["apache-foreground"]
   exposedPorts: ["80"]
 
 fileContentTests:

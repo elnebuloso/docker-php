@@ -135,4 +135,35 @@
     </target>
 
 
+    <target name="push" depends="build">
+        <exec command="docker run ${image} php --version" passthru="false" checkreturn="true" outputProperty="container.php.version" level="info" dir="${project.root}"/>
+
+        <adhoc-task name="semver"><![CDATA[
+            class FooTest extends Task {
+                private $version;
+                private $outputProperty;
+
+                function setVersion($version) {
+                    $this->version = $version;
+                }
+
+                function setOutputProperty($outputProperty) {
+                    $this->outputProperty = $outputProperty;
+                }
+
+                function main() {
+                    if(preg_match('#(PHP ((\d{1,}).(\d{1,}).(\d{1,})))#', $this->version, $matches)) {
+                        $this->getProject()->setProperty($this->outputProperty, trim($matches[2]));
+                        return;
+                    }
+
+                    throw new BuildException('cannot parse semver');
+                }
+            }
+        ]]></adhoc-task>
+
+        <semver version="${container.php.version}" outputProperty="semver"/>
+    </target>
+
+
 </project>
