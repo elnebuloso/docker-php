@@ -17,7 +17,7 @@ pipeline {
 	stages {
         stage('build') {
             steps {
-                sh "docker-login --username ${REGISTRY_CREDENTIALS_USR} --password ${REGISTRY_CREDENTIALS_PSW}"
+                sh "docker login --username ${REGISTRY_CREDENTIALS_USR} --password ${REGISTRY_CREDENTIALS_PSW}"
             }
         }
 	}
