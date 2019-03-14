@@ -46,7 +46,6 @@ RUN echo "configure apache" \
     && chmod 0644 /etc/apache2/sites-available/* \
     && a2enmod headers \
     && a2enmod rewrite \
-    && a2enconf security \
     && a2enconf servername \
     && a2enconf expose-env \
     && a2enconf log-formats \

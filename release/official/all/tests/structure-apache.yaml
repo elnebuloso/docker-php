@@ -1,7 +1,7 @@
 schemaVersion: "2.0.0"
 
 metadataTest:
-  cmd: ["apache-foreground"]
+  cmd: ["apache2-foreground"]
   exposedPorts: ["80"]
 
 fileContentTests:
@@ -12,10 +12,6 @@ fileContentTests:
   - name: "Apache2 Config log-formats.conf"
     path: "/etc/apache2/conf-available/log-formats.conf"
     expectedContents: ['combined_noip', 'common_noip']
-
-  - name: "Apache2 Config security.conf"
-    path: "/etc/apache2/conf-available/security.conf"
-    expectedContents: ['ServerTokens Prod', 'ServerSignature Off', 'TraceEnable Off']
 
   - name: "Apache2 Config servername.conf"
     path: "/etc/apache2/conf-available/servername.conf"
@@ -30,4 +26,4 @@ commandTests:
   - name: "Apache2 Server Modules"
     command: "/usr/sbin/apache2ctl"
     args: ["-t", "-D", "DUMP_MODULES"]
-    expectedOutput: ["php\\d_module", "rewrite_module", "security2_module", "setenvif_module", "headers_module"]
+    expectedOutput: ["php\\d_module", "rewrite_module", "setenvif_module", "headers_module"]
