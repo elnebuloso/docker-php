@@ -36,7 +36,7 @@ RUN echo "configure php helpers" \
     && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
     && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
     && chmod +x /usr/local/bin/* \
-    && chmod +x /opt/php/extensions/*
+    && chmod 777 /opt/php/extensions/*
 
 RUN phpext install opcache
 
