@@ -1,7 +1,6 @@
 schemaVersion: "2.0.0"
 
 metadataTest:
-  cmd: ["container-run"]
   env:
     - key: LANG
       value: "en_US.UTF-8"
@@ -15,4 +14,25 @@ commandTests:
   - name: "PHP Extensions"
     command: "php"
     args: ["-m"]
-    expectedOutput: ["curl", "gd", "imagick", "intl", "mbstring", "memcached", "mongodb", "mysql", "mysqli", "mysqlnd", "pdo_mysql", "pdo_sqlite", "sqlite3", "ssh2", "xml", "xmlreader", "xmlwriter", "yaml", "zip", "Zend OPcache"]
+    expectedOutput:
+      - "curl"
+      - "gd"
+      - "imagick"
+      - "intl"
+      - "mbstring"
+      - "memcached"
+      - "mongodb"
+      - "mysql"
+      - "mysqli"
+      - "mysqlnd"
+      - "pdo_mysql"
+      - "pdo_sqlite"
+      - "sodium"
+      - "sqlite3"
+      - "ssh2"
+      - "xml"
+      - "xmlreader"
+      - "xmlwriter"
+      - "yaml"
+      - "zip"
+      - "Zend OPcache"
