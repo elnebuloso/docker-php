@@ -117,11 +117,11 @@
 
 
     <target name="build">
-        <echo message="release:       ${release}"/>
-        <echo message="version:       ${version}"/>
-        <echo message="type:          ${type}"/>
+        <echo message="release: ${release}"/>
+        <echo message="version: ${version}"/>
+        <echo message="type: ${type}"/>
+        <echo message="image: ${image}"/>
         <echo message="image.version: ${image.version}"/>
-        <echo message="image:         ${image}"/>
         <echo message=""/>
 
         <exec command="docker build --pull --tag ${image} --build-arg PHP_VERSION=${image.version} --file release/${release}/${type}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
