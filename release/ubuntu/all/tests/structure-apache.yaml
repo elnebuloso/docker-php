@@ -30,4 +30,4 @@ commandTests:
   - name: "Apache2 Server Modules"
     command: "/usr/sbin/apache2ctl"
     args: ["-t", "-D", "DUMP_MODULES"]
-    expectedOutput: ["php\\d_module", "rewrite_module", "security2_module", "setenvif_module", "headers_module"]
+    expectedOutput: ["php\\d_module", "rewrite_module", "setenvif_module", "headers_module"]

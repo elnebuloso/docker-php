@@ -1,190 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="application" basedir="." default="commons:help">
+<project name="application" basedir="." default="help">
 
 
     <property file="build.properties"/>
-    <property file="build.properties.local"/>
+
+
+    <property name="projectRoot" value=""/>
+    <property name="release" value=""/>
+    <property name="version" value=""/>
+    <property name="type" value=""/>
+    <property name="semver" value=""/>
 
 
     <import file="/srv/phing/commons/standard.xml"/>
 
 
-    <target name="build:all:official">
-        <property name="command" value="build"/>
-        <phingcall target="run:7.1-apache"/>
-        <phingcall target="run:7.1-cli"/>
-        <phingcall target="run:7.2-apache"/>
-        <phingcall target="run:7.2-cli"/>
-        <phingcall target="run:7.3-apache"/>
-        <phingcall target="run:7.3-cli"/>
-    </target>
+    <target name="validate">
+        <if>
+            <equals arg1="${release}" arg2=""/>
+            <then>
+                <fail message="release property is empty"/>
+            </then>
+        </if>
 
+        <if>
+            <equals arg1="${version}" arg2=""/>
+            <then>
+                <fail message="version property is empty"/>
+            </then>
+        </if>
 
-    <target name="build:all:ubuntu">
-        <property name="command" value="build"/>
-        <phingcall target="run:7.1-apache-ubuntu"/>
-        <phingcall target="run:7.1-cli-ubuntu"/>
-        <phingcall target="run:7.2-apache-ubuntu"/>
-        <phingcall target="run:7.2-cli-ubuntu"/>
-        <phingcall target="run:7.3-apache-ubuntu"/>
-        <phingcall target="run:7.3-cli-ubuntu"/>
-    </target>
+        <if>
+            <equals arg1="${type}" arg2=""/>
+            <then>
+                <fail message="type property is empty"/>
+            </then>
+        </if>
 
+        <if>
+            <equals arg1="${release}" arg2="official"/>
+            <then>
+                <property name="image" value="${projectName}:${version}-${type}"/>
+            </then>
+        </if>
 
-    <target name="run:7.1-apache">
-        <phingcall target="${command}">
-            <property name="release" value="official"/>
-            <property name="version" value="7.1"/>
-            <property name="type" value="apache"/>
-            <property name="image.version" value="${version}-${type}"/>
-            <property name="image" value="${project.name}:${version}-${type}"/>
-        </phingcall>
-    </target>
+        <if>
+            <equals arg1="${release}" arg2="ubuntu"/>
+            <then>
+                <property name="image" value="${projectName}:${version}-${type}-${release}"/>
+            </then>
+        </if>
 
-
-    <target name="run:7.1-cli">
-        <phingcall target="${command}">
-            <property name="release" value="official"/>
-            <property name="version" value="7.1"/>
-            <property name="type" value="cli"/>
-            <property name="image.version" value="${version}-${type}"/>
-            <property name="image" value="${project.name}:${version}-${type}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.2-apache">
-        <phingcall target="${command}">
-            <property name="release" value="official"/>
-            <property name="version" value="7.2"/>
-            <property name="type" value="apache"/>
-            <property name="image.version" value="${version}-${type}"/>
-            <property name="image" value="${project.name}:${version}-${type}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.2-cli">
-        <phingcall target="${command}">
-            <property name="release" value="official"/>
-            <property name="version" value="7.2"/>
-            <property name="type" value="cli"/>
-            <property name="image.version" value="${version}-${type}"/>
-            <property name="image" value="${project.name}:${version}-${type}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.3-apache">
-        <phingcall target="${command}">
-            <property name="release" value="official"/>
-            <property name="version" value="7.3"/>
-            <property name="type" value="apache"/>
-            <property name="image.version" value="${version}-${type}"/>
-            <property name="image" value="${project.name}:${version}-${type}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.3-cli">
-        <phingcall target="${command}">
-            <property name="release" value="official"/>
-            <property name="version" value="7.3"/>
-            <property name="type" value="cli"/>
-            <property name="image.version" value="${version}-${type}"/>
-            <property name="image" value="${project.name}:${version}-${type}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.1-apache-ubuntu">
-        <phingcall target="${command}">
-            <property name="release" value="ubuntu"/>
-            <property name="version" value="7.1"/>
-            <property name="type" value="apache"/>
-            <property name="image.version" value="${version}"/>
-            <property name="image" value="${project.name}:${version}-${type}-${release}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.1-cli-ubuntu">
-        <phingcall target="${command}">
-            <property name="release" value="ubuntu"/>
-            <property name="version" value="7.1"/>
-            <property name="type" value="cli"/>
-            <property name="image.version" value="${version}"/>
-            <property name="image" value="${project.name}:${version}-${type}-${release}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.2-apache-ubuntu">
-        <phingcall target="${command}">
-            <property name="release" value="ubuntu"/>
-            <property name="version" value="7.2"/>
-            <property name="type" value="apache"/>
-            <property name="image.version" value="${version}"/>
-            <property name="image" value="${project.name}:${version}-${type}-${release}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.2-cli-ubuntu">
-        <phingcall target="${command}">
-            <property name="release" value="ubuntu"/>
-            <property name="version" value="7.2"/>
-            <property name="type" value="cli"/>
-            <property name="image.version" value="${version}"/>
-            <property name="image" value="${project.name}:${version}-${type}-${release}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.3-apache-ubuntu">
-        <phingcall target="${command}">
-            <property name="release" value="ubuntu"/>
-            <property name="version" value="7.3"/>
-            <property name="type" value="apache"/>
-            <property name="image.version" value="${version}"/>
-            <property name="image" value="${project.name}:${version}-${type}-${release}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="run:7.3-cli-ubuntu">
-        <phingcall target="${command}">
-            <property name="release" value="ubuntu"/>
-            <property name="version" value="7.3"/>
-            <property name="type" value="cli"/>
-            <property name="image.version" value="7.3"/>
-            <property name="image" value="${project.name}:${version}-${type}-${release}"/>
-        </phingcall>
-    </target>
-
-
-    <target name="build">
+        <echo message="projectRoot: ${projectRoot}"/>
         <echo message="release: ${release}"/>
         <echo message="version: ${version}"/>
         <echo message="type: ${type}"/>
         <echo message="image: ${image}"/>
-        <echo message="image.version: ${image.version}"/>
-        <echo message=""/>
+    </target>
 
-        <exec command="docker build --pull --tag ${image} --build-arg PHP_VERSION=${image.version} --file release/${release}/${type}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
-        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${project.root}:/app zemanlx/container-structure-test:v1.7.0-alpine test --image ${image} --config /app/release/${release}/all/tests/structure.yaml" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
-        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${project.root}:/app zemanlx/container-structure-test:v1.7.0-alpine test --image ${image} --config /app/release/${release}/all/tests/structure-${type}.yaml" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+
+    <target name="build" depends="validate">
+        <exec command="docker build --pull --tag ${image} --build-arg PHP_VERSION=${version} --build-arg PHP_IMAGE_TYPE=${type} --file release/${release}/${type}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release/${release}/all/tests/structure.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release/${release}/all/tests/structure-${type}.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
     </target>
 
 
     <target name="run" depends="build">
-        <exec command="docker run --publish 80:80 --volume ${project.root}/main:/var/www ${image}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+        <if>
+            <equals arg1="${type}" arg2="cli"/>
+            <then>
+                <fail message="type property: ${type} is invalid, only apache is supported"/>
+            </then>
+        </if>
+
+        <exec command="docker stop php-apache || true &amp;&amp; docker rm php-apache || true" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run --env PHPEXT_ENABLE_XDEBUG=yes --detach --publish 80:80 --volume ${projectRoot}/main:/var/www --name php-apache ${image}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
     </target>
 
 
     <target name="push" depends="build">
-        <exec command="docker run ${image} php --version" passthru="false" checkreturn="true" outputProperty="container.php.version" level="info" dir="${project.root}"/>
+        <exec command="echo '${password}' | docker login -u ${username} --password-stdin" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run ${image} php --version" passthru="false" checkreturn="true" outputProperty="container.php.version" level="info" dir="${projectRoot}"/>
 
         <adhoc-task name="semver"><![CDATA[
             class FooTest extends Task {
@@ -215,24 +113,27 @@
         <if>
             <equals arg1="${release}" arg2="official"/>
             <then>
-                <property name="docker.hub.tag1" value="elnebuloso/${project.name}:${semver}-${type}" override="true"/>
-                <property name="docker.hub.tag2" value="elnebuloso/${project.name}:${version}-${type}" override="true"/>
+                <property name="docker.hub.tag1" value="elnebuloso/${projectName}:${semver}-${type}" override="true"/>
+                <property name="docker.hub.tag2" value="elnebuloso/${projectName}:${version}-${type}" override="true"/>
             </then>
         </if>
 
         <if>
             <equals arg1="${release}" arg2="ubuntu"/>
             <then>
-                <property name="docker.hub.tag1" value="elnebuloso/${project.name}:${semver}-${type}-${release}" override="true"/>
-                <property name="docker.hub.tag2" value="elnebuloso/${project.name}:${version}-${type}-${release}" override="true"/>
+                <property name="docker.hub.tag1" value="elnebuloso/${projectName}:${semver}-${type}-${release}" override="true"/>
+                <property name="docker.hub.tag2" value="elnebuloso/${projectName}:${version}-${type}-${release}" override="true"/>
             </then>
         </if>
 
-        <exec command="docker tag ${image} ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
-        <exec command="docker tag ${image} ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+        <echo message="push ${docker.hub.tag1}"/>
+        <echo message="push ${docker.hub.tag2}"/>
 
-        <exec command="docker push ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
-        <exec command="docker push ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${project.root}"/>
+        <exec command="docker tag ${image} ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker tag ${image} ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+
+        <exec command="docker push ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker push ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
     </target>
 
 

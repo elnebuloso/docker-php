@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.11.0] - 2019-08-27
+### Changed
+- updated build process, based on phing
+
+
 ## [1.9.0] - 2019-03-08
 ### Changed
 - removed APP_VERSION from expose-env.conf

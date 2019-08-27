@@ -14,6 +14,7 @@ commandTests:
   - name: "PHP Extensions"
     command: "php"
     args: ["-m"]
+
     expectedOutput:
       - calendar
       - Core

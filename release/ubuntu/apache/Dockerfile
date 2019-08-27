@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER jeff.tunessen@gmail.com
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -27,7 +27,6 @@ ENV LC_ALL en_US.UTF-8
 
 RUN echo "install php" \
     && add-apt-repository ppa:ondrej/php \
-    && add-apt-repository ppa:ondrej/pkg-gearman \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         php${PHP_VERSION}-cli \
@@ -42,6 +41,7 @@ RUN echo "install php" \
         php${PHP_VERSION}-mysql \
         php${PHP_VERSION}-sqlite3 \
         php${PHP_VERSION}-ssh \
+        php${PHP_VERSION}-xdebug \
         php${PHP_VERSION}-xml \
         php${PHP_VERSION}-yaml \
         php${PHP_VERSION}-zip \
@@ -56,7 +56,7 @@ RUN echo "install apache" \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         apache2 \
-        libapache2-modsecurity \
+        libapache2-mod-security2 \
         php${PHP_VERSION} \
     && apt-get -y autoremove \
     && apt-get -y autoclean \
@@ -64,14 +64,15 @@ RUN echo "install apache" \
     && rm -rf /tmp/*
 
 ADD release/ubuntu/all/php/docker.ini /etc/php/${PHP_VERSION}/mods-available/docker.ini
-ADD release/ubuntu/apache/apache-foreground.sh /usr/local/bin/apache-foreground
 ADD release/ubuntu/apache/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ADD release/ubuntu/apache/apache-foreground.sh /usr/local/bin/apache-foreground
 ADD release/ubuntu/apache/conf-available /etc/apache2/conf-available
 ADD release/ubuntu/apache/sites-available /etc/apache2/sites-available
 
 RUN echo "configure php" \
     && chmod +x /usr/local/bin/* \
-    && phpenmod docker
+    && phpenmod docker \
+    && phpdismod xdebug
 
 RUN echo "configure apache" \
     && chmod 0644 /etc/apache2/conf-available/* \
@@ -79,21 +80,22 @@ RUN echo "configure apache" \
     && chmod 0644 /etc/php/${PHP_VERSION}/mods-available/* \
     && a2enmod headers \
     && a2enmod rewrite \
+    && a2dismod security2 \
     && a2enconf security \
     && a2enconf servername \
     && a2enconf expose-env \
     && a2enconf log-formats \
     && ln -sfT /dev/stderr /var/log/apache2/error.log \
     && ln -sfT /dev/stdout /var/log/apache2/access.log \
-    && ln -sfT /dev/stderr /var/log/apache2/other_vhosts_access.log \
+    && ln -sfT /dev/stdout /var/log/apache2/other_vhosts_access.log \
     && rm -rf /var/www/*
 
 ENV APP_ENV dev
-
-EXPOSE 80
 
 WORKDIR /var/www
 
 ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["apache-foreground"]
+
+EXPOSE 80

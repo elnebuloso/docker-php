@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER jeff.tunessen@gmail.com
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -27,7 +27,6 @@ ENV LC_ALL en_US.UTF-8
 
 RUN echo "install php" \
     && add-apt-repository ppa:ondrej/php \
-    && add-apt-repository ppa:ondrej/pkg-gearman \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         php${PHP_VERSION}-cli \
@@ -42,6 +41,7 @@ RUN echo "install php" \
         php${PHP_VERSION}-mysql \
         php${PHP_VERSION}-sqlite3 \
         php${PHP_VERSION}-ssh \
+        php${PHP_VERSION}-xdebug \
         php${PHP_VERSION}-xml \
         php${PHP_VERSION}-yaml \
         php${PHP_VERSION}-zip \
@@ -56,7 +56,8 @@ ADD release/ubuntu/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN echo "configure php" \
     && chmod +x /usr/local/bin/* \
-    && phpenmod docker
+    && phpenmod docker \
+    && phpdismod xdebug
 
 ENV APP_ENV dev
 
