@@ -1,6 +1,7 @@
 ARG PHP_VERSION
+ARG PHP_IMAGE_TYPE
 
-FROM php:${PHP_VERSION}
+FROM php:${PHP_VERSION}-${PHP_IMAGE_TYPE}
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -51,7 +52,9 @@ RUN echo "configure apache" \
     && a2enconf log-formats \
     && rm -rf /var/www/*
 
-RUN phpext install opcache
+RUN echo "install php extensions" \
+    && phpext install opcache \
+    && phpext install xdebug
 
 WORKDIR /var/www
 
