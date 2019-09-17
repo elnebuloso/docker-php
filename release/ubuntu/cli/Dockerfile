@@ -61,7 +61,7 @@ RUN echo "configure php" \
 
 ENV APP_ENV dev
 
-WORKDIR /var/www
+WORKDIR /app/main
 
 ENTRYPOINT ["docker-entrypoint"]
 

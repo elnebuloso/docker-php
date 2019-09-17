@@ -88,11 +88,11 @@ RUN echo "configure apache" \
     && ln -sfT /dev/stderr /var/log/apache2/error.log \
     && ln -sfT /dev/stdout /var/log/apache2/access.log \
     && ln -sfT /dev/stdout /var/log/apache2/other_vhosts_access.log \
-    && rm -rf /var/www/*
+    && rm -rf /app/main/*
 
 ENV APP_ENV dev
 
-WORKDIR /var/www
+WORKDIR /app/main
 
 ENTRYPOINT ["docker-entrypoint"]
 

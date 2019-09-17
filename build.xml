@@ -10,6 +10,7 @@
     <property name="release" value=""/>
     <property name="version" value=""/>
     <property name="type" value=""/>
+    <property name="ext" value=""/>
     <property name="semver" value=""/>
 
 
@@ -39,16 +40,23 @@
         </if>
 
         <if>
+            <equals arg1="${ext}" arg2=""/>
+            <then>
+                <property name="ext" value="base" override="true"/>
+            </then>
+        </if>
+
+        <if>
             <equals arg1="${release}" arg2="official"/>
             <then>
-                <property name="image" value="${projectName}:${version}-${type}"/>
+                <property name="image" value="${projectName}:${version}-${type}" override="true"/>
             </then>
         </if>
 
         <if>
             <equals arg1="${release}" arg2="ubuntu"/>
             <then>
-                <property name="image" value="${projectName}:${version}-${type}-${release}"/>
+                <property name="image" value="${projectName}:${version}-${type}-${release}" override="true"/>
             </then>
         </if>
 
@@ -56,14 +64,28 @@
         <echo message="release: ${release}"/>
         <echo message="version: ${version}"/>
         <echo message="type: ${type}"/>
+        <echo message="ext: ${ext}"/>
         <echo message="image: ${image}"/>
     </target>
 
 
     <target name="build" depends="validate">
         <exec command="docker build --pull --tag ${image} --build-arg PHP_VERSION=${version} --build-arg PHP_IMAGE_TYPE=${type} --file release/${release}/${type}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
-        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release/${release}/all/tests/structure.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
-        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release/${release}/all/tests/structure-${type}.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/all/tests.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+
+        <if>
+            <available file="${projectRoot}/release/${release}/${type}/tests.yaml" property="testExists" value="yes"/>
+            <then>
+                <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release/${release}/${type}/tests.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+            </then>
+        </if>
+
+        <if>
+            <available file="${projectRoot}/release/${release}/all/php/extensions/test-${ext}.yaml" property="testExists" value="yes"/>
+            <then>
+                <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release//all/php/extensions/test-${ext}.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+            </then>
+        </if>
     </target>
 
 
@@ -76,7 +98,7 @@
         </if>
 
         <exec command="docker stop php-apache || true &amp;&amp; docker rm php-apache || true" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
-        <exec command="docker run --env PHPEXT_ENABLE_XDEBUG=yes --detach --publish 80:80 --volume ${projectRoot}/main:/var/www --name php-apache ${image}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run --detach --publish 80:80 --volume ${projectRoot}/main:/app/main --name php-apache ${image}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
     </target>
 
 

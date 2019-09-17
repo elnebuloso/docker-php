@@ -4,13 +4,14 @@ metadataTest:
   env:
     - key: LANG
       value: "en_US.UTF-8"
+    - key: LANGUAGE
+      value: "en_US.UTF-8"
+    - key: LC_ALL
+      value: "en_US.UTF-8"
+    - key: APP_ENV
+      value: "dev"
 
 commandTests:
-  - name: "PHP Interpreter"
-    command: "php"
-    args: ["-v"]
-    expectedOutput: ['PHP .* \(cli\)', 'Zend OPcache']
-
   - name: "PHP Extensions"
     command: "php"
     args: ["-m"]
@@ -46,5 +47,4 @@ commandTests:
       - xml
       - xmlreader
       - xmlwriter
-      - Zend OPcache
       - zlib

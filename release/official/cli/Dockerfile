@@ -8,8 +8,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN echo "install system" \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        software-properties-common \
-        ca-certificates \
         locales \
         locales-all \
         curl \
@@ -43,7 +41,7 @@ RUN echo "install php extensions" \
     && phpext install opcache \
     && phpext install xdebug
 
-WORKDIR /var/www
+WORKDIR /app/main
 
 ENTRYPOINT ["phpext-entrypoint"]
 

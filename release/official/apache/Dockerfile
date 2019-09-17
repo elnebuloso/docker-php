@@ -1,9 +1,8 @@
 ARG PHP_VERSION
 ARG PHP_IMAGE_TYPE
-
-FROM php:${PHP_VERSION}-${PHP_IMAGE_TYPE}
-
 ARG DEBIAN_FRONTEND=noninteractive
+
+FROM php:${PHP_VERSION}-${PHP_IMAGE_TYPE} AS base
 
 RUN echo "install system" \
     && apt-get update \
@@ -26,21 +25,20 @@ RUN echo "install system" \
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
-
 ENV APP_ENV dev
 
+ADD all/bin /usr/local/bin
 ADD release/official/all/bin /usr/local/bin
 ADD release/official/all/php/extensions /opt/php/extensions
-ADD release/official/all/php/docker.ini $PHP_INI_DIR/conf.d
 
-RUN echo "configure php helpers" \
+RUN echo "configure helpers" \
     && find /usr/local/bin -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
     && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
     && chmod +x /usr/local/bin/* \
     && chmod +x -R /opt/php/extensions/*
 
-ADD release/official/apache/conf-available /etc/apache2/conf-available
-ADD release/official/apache/sites-available /etc/apache2/sites-available
+ADD all/apache/conf-available /etc/apache2/conf-available
+ADD all/apache/sites-available /etc/apache2/sites-available
 
 RUN echo "configure apache" \
     && chmod 0644 /etc/apache2/conf-available/* \
@@ -49,14 +47,9 @@ RUN echo "configure apache" \
     && a2enmod rewrite \
     && a2enconf servername \
     && a2enconf expose-env \
-    && a2enconf log-formats \
-    && rm -rf /var/www/*
+    && a2enconf log-formats
 
-RUN echo "install php extensions" \
-    && phpext install opcache \
-    && phpext install xdebug
-
-WORKDIR /var/www
+WORKDIR /app/main
 
 ENTRYPOINT ["phpext-entrypoint"]
 
