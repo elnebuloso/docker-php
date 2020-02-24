@@ -14,7 +14,7 @@ jobs:
 #          args: phing
       - uses: elnebuloso/github-action-phing@master
         with:
-          args: phing project:help
+          args: project:help
 #      - uses: elnebuloso/github-action-phing@master
 #        with:
 #          args: phing properties:ci:git
