@@ -9,18 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: elnebuloso/github-action-phing@master
-        with:
-          args: phing
-      - uses: elnebuloso/github-action-phing@master
+#      - uses: elnebuloso/github-action-phing@master
+#        with:
+#          args: phing
+#      - uses: elnebuloso/github-action-phing@master
         with:
           args: phing project:help
-      - uses: elnebuloso/github-action-phing@master
-        with:
-          args: phing properties:ci:git
-      - uses: elnebuloso/github-action-phing@master
-        with:
-          args: phing properties:ci:gitversion
-      - uses: elnebuloso/github-action-phing@master
-        with:
-          args: phing properties:ci:fileversion
+#      - uses: elnebuloso/github-action-phing@master
+#        with:
+#          args: phing properties:ci:git
+#      - uses: elnebuloso/github-action-phing@master
+#        with:
+#          args: phing properties:ci:gitversion
+#      - uses: elnebuloso/github-action-phing@master
+#        with:
+#          args: phing properties:ci:fileversion
