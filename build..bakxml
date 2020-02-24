@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="application" basedir="." default="help">
+
+
+    <property file="build.properties"/>
+
+
+    <property name="projectRoot" value=""/>
+    <property name="release" value=""/>
+    <property name="version" value=""/>
+    <property name="type" value=""/>
+    <property name="ext" value=""/>
+    <property name="semver" value=""/>
+
+
+    <import file="/srv/phing/commons/standard.xml"/>
+
+
+    <target name="validate">
+        <if>
+            <equals arg1="${release}" arg2=""/>
+            <then>
+                <fail message="release property is empty"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${version}" arg2=""/>
+            <then>
+                <fail message="version property is empty"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${type}" arg2=""/>
+            <then>
+                <fail message="type property is empty"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${ext}" arg2=""/>
+            <then>
+                <property name="ext" value="base" override="true"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${release}" arg2="official"/>
+            <then>
+                <property name="image" value="${projectName}:${version}-${type}" override="true"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${release}" arg2="ubuntu"/>
+            <then>
+                <property name="image" value="${projectName}:${version}-${type}-${release}" override="true"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${release}" arg2="alpine"/>
+            <then>
+                <property name="image" value="${projectName}:${version}-${type}-${release}" override="true"/>
+            </then>
+        </if>
+
+        <echo message="projectRoot: ${projectRoot}"/>
+        <echo message="release: ${release}"/>
+        <echo message="version: ${version}"/>
+        <echo message="type: ${type}"/>
+        <echo message="ext: ${ext}"/>
+        <echo message="image: ${image}"/>
+    </target>
+
+
+    <target name="build" depends="validate">
+        <exec command="docker build --pull --tag ${image} --build-arg PHP_VERSION=${version} --build-arg PHP_IMAGE_TYPE=${type} --file release/${release}/${type}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/all/tests.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+
+        <if>
+            <available file="${projectRoot}/release/${release}/${type}/tests.yaml" property="testExists" value="yes"/>
+            <then>
+                <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release/${release}/${type}/tests.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+            </then>
+        </if>
+
+        <if>
+            <available file="${projectRoot}/release/${release}/all/php/extensions/test-${ext}.yaml" property="testExists" value="yes"/>
+            <then>
+                <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${projectRoot}:/app zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/release//all/php/extensions/test-${ext}.yaml" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+            </then>
+        </if>
+    </target>
+
+
+    <target name="run" depends="build">
+        <if>
+            <equals arg1="${type}" arg2="cli"/>
+            <then>
+                <fail message="type property: ${type} is invalid, only apache is supported"/>
+            </then>
+        </if>
+
+        <exec command="docker stop php-apache || true &amp;&amp; docker rm php-apache || true" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run --detach --publish 80:80 --volume ${projectRoot}/main:/app/main --name php-apache ${image}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+    </target>
+
+
+    <target name="push" depends="build">
+        <exec command="echo '${password}' | docker login -u ${username} --password-stdin" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker run ${image} php --version" passthru="false" checkreturn="true" outputProperty="container.php.version" level="info" dir="${projectRoot}"/>
+
+        <adhoc-task name="semver"><![CDATA[
+            class FooTest extends Task {
+                private $version;
+                private $outputProperty;
+
+                function setVersion($version) {
+                    $this->version = $version;
+                }
+
+                function setOutputProperty($outputProperty) {
+                    $this->outputProperty = $outputProperty;
+                }
+
+                function main() {
+                    if(preg_match('#(PHP ((\d{1,}).(\d{1,}).(\d{1,})))#', $this->version, $matches)) {
+                        $this->getProject()->setProperty($this->outputProperty, trim($matches[2]));
+                        return;
+                    }
+
+                    throw new BuildException('cannot parse semver');
+                }
+            }
+        ]]></adhoc-task>
+
+        <semver version="${container.php.version}" outputProperty="semver"/>
+
+        <if>
+            <equals arg1="${release}" arg2="official"/>
+            <then>
+                <property name="docker.hub.tag1" value="elnebuloso/${projectName}:${semver}-${type}" override="true"/>
+                <property name="docker.hub.tag2" value="elnebuloso/${projectName}:${version}-${type}" override="true"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${release}" arg2="ubuntu"/>
+            <then>
+                <property name="docker.hub.tag1" value="elnebuloso/${projectName}:${semver}-${type}-${release}" override="true"/>
+                <property name="docker.hub.tag2" value="elnebuloso/${projectName}:${version}-${type}-${release}" override="true"/>
+            </then>
+        </if>
+
+        <echo message="push ${docker.hub.tag1}"/>
+        <echo message="push ${docker.hub.tag2}"/>
+
+        <exec command="docker tag ${image} ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker tag ${image} ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+
+        <exec command="docker push ${docker.hub.tag1}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+        <exec command="docker push ${docker.hub.tag2}" passthru="true" checkreturn="true" level="info" dir="${projectRoot}"/>
+    </target>
+
+
+</project>

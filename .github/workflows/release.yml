@@ -1,0 +1,14 @@
+name: Release
+
+on:
+  push:
+
+jobs:
+  main:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: elnebuloso/github-action-phing@master
+        with:
+          args: "phing"
