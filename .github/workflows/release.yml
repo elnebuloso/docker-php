@@ -11,5 +11,13 @@ jobs:
       - uses: actions/checkout@master
       - uses: elnebuloso/github-action-phing@master
         with:
-          args: project:help properties:ci:git properties:ci:gitversion properties:ci:fileversion
-
+          target: project:help
+      - uses: elnebuloso/github-action-phing@master
+        with:
+          target: properties:ci:git
+      - uses: elnebuloso/github-action-phing@master
+        with:
+          target: properties:ci:gitversion
+      - uses: elnebuloso/github-action-phing@master
+        with:
+          target: properties:ci:fileversion
