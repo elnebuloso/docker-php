@@ -21,3 +21,8 @@ jobs:
       - uses: elnebuloso/github-action-phing@master
         with:
           target: properties:ci:fileversion
+      - uses: elnebuloso/github-action-phing@master
+        with:
+          target: |
+            properties:ci:gitversion
+            properties:ci:fileversion
