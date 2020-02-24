@@ -11,4 +11,9 @@ jobs:
       - uses: actions/checkout@master
       - uses: elnebuloso/github-action-phing@master
         with:
-          args: "phing"
+          args: |
+            phing
+            phing project:help
+            phing properties:ci:git
+            phing properties:ci:gitversion
+            phing properties:ci:fileversion
