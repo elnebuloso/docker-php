@@ -25,8 +25,13 @@ ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ENV APP_ENV dev
+ENV PHP_VERSION 7.4
 
+COPY php/all/php/phpext.sh /usr/local/bin/phpext
 COPY php/all/php/docker.ini $PHP_INI_DIR/conf.d
+
+RUN echo "configure" \
+    && chmod +x /usr/local/bin/*
 
 WORKDIR /app/main
 

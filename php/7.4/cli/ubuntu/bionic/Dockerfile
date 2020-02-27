@@ -25,6 +25,7 @@ ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ENV APP_ENV dev
+ENV PHP_VERSION 7.4
 
 RUN echo "install php" \
     && add-apt-repository ppa:ondrej/php \
@@ -36,6 +37,7 @@ RUN echo "install php" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
+COPY php/all/php/phpext.sh /usr/local/bin/phpext
 COPY php/all/php/docker.ini /etc/php/7.4/mods-available/docker.ini
 COPY php/ubuntu/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
