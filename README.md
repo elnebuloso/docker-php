@@ -1,3 +1,13 @@
+
+7.4-debian-apache
+7.4-apache-debian
+7.4-apache-debian-buster
+
+7.4-apache-ubuntu
+7.4-apache-ubuntu-bionic
+
+
+
 # docker-php
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/elnebuloso/php.svg)](https://hub.docker.com/r/elnebuloso/php)
