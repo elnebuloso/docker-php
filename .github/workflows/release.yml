@@ -12,6 +12,17 @@ jobs:
       - uses: elnebuloso/github-action-phing@master
         with:
           target: 7.4-apache-debian-buster
+      - name: run structure tests
+        uses: plexsystems/container-structure-test-action@v0.1.0
+        with:
+          image: 7.4-apache-debian-buster
+          config: tests/all/tests.yaml
+
       - uses: elnebuloso/github-action-phing@master
         with:
           target: 7.4-cli-debian-buster
+      - name: run structure tests
+        uses: plexsystems/container-structure-test-action@v0.1.0
+        with:
+          image: 7.4-cli-debian-buster
+          config: tests/all/tests.yaml
