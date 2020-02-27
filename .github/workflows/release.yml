@@ -1,0 +1,17 @@
+name: Release
+
+on:
+  push:
+
+jobs:
+  7.4:
+    name: Release 7.4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: elnebuloso/github-action-phing@master
+        with:
+          target: build -Dphp_build_version=7.4 -Dphp_build_type=apache -Dphp_build_os=debian -Dphp_build_release=buster
+      - uses: elnebuloso/github-action-phing@master
+        with:
+          target: build -Dphp_build_version=7.4 -Dphp_build_type=cli -Dphp_build_os=debian -Dphp_build_release=buster
