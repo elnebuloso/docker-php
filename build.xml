@@ -70,7 +70,7 @@
 
     <target name="build" depends="configure">
         <exec command="docker build --pull --tag ${image} --file ${php_build_version}/${php_build_type}/${php_build_os}/${php_build_release}/Dockerfile ." passthru="true" checkreturn="true" level="info"/>
-<!--        <exec command="docker run -i &#45;&#45;rm -v ${project_root}/tests:${project_root}/tests zemanlx/container-structure-test:v1.8.0-alpine test &#45;&#45;image ${image} &#45;&#45;config ${project_root}/tests/all/tests.yaml" passthru="true" checkreturn="true" level="info"/>-->
+        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/tests:/tests zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /tests/all/tests.yaml" passthru="true" checkreturn="true" level="info"/>
     </target>
 
 
