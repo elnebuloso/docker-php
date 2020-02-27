@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  74:
+  _74:
     name: Release 7.4
     runs-on: ubuntu-latest
     steps:
