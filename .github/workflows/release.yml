@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: elnebuloso/github-action-phing@master
         with:
-          target: build -Dphp_build_version=7.4 -Dphp_build_type=apache -Dphp_build_os=debian -Dphp_build_release=buster
+          target: 7.4-apache-debian-buster
       - uses: elnebuloso/github-action-phing@master
         with:
-          target: build -Dphp_build_version=7.4 -Dphp_build_type=cli -Dphp_build_os=debian -Dphp_build_release=buster
+          target: 7.4-cli-debian-buster
