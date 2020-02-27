@@ -1,0 +1,52 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  env:
+    - key: LANG
+      value: "en_US.UTF-8"
+    - key: LANGUAGE
+      value: "en_US.UTF-8"
+    - key: LC_ALL
+      value: "en_US.UTF-8"
+    - key: APP_ENV
+      value: "dev"
+
+commandTests:
+  - name: "PHP Extensions"
+    command: "php"
+    args: ["-m"]
+    expectedOutput:
+      - Core
+      - ctype
+      - curl
+      - date
+      - dom
+      - fileinfo
+      - filter
+      - ftp
+      - hash
+      - iconv
+      - json
+      - libxml
+      - mbstring
+      - mysqlnd
+      - openssl
+      - pcre
+      - PDO
+      - pdo_sqlite
+      - Phar
+      - posix
+      - readline
+      - Reflection
+      - session
+      - SimpleXML
+      - sodium
+      - SPL
+      - sqlite3
+      - standard
+      - tokenizer
+      - xml
+      - xmlreader
+      - xmlwriter
+      - Zend OPcache
+      - zlib

@@ -36,6 +36,11 @@ RUN echo "install php" \
         apache2 \
         php7.4 \
         php7.4-cli \
+        php7.4-curl \
+        php7.4-mbstring \
+        php7.4-mysql \
+        php7.4-sqlite3 \
+        php7.4-xml \
     && apt-get -y autoremove \
     && apt-get -y autoclean \
     && apt-get -y clean \

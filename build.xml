@@ -23,4 +23,55 @@
     </target>
 
 
+    <target name="7.4-apache-debian-buster">
+        <phingcall target="build">
+            <property name="php_build_version" value="7.4"/>
+            <property name="php_build_type" value="apache"/>
+            <property name="php_build_os" value="debian"/>
+            <property name="php_build_release" value="buster"/>
+        </phingcall>
+    </target>
+
+
+    <target name="7.4-cli-debian-buster">
+        <phingcall target="build">
+            <property name="php_build_version" value="7.4"/>
+            <property name="php_build_type" value="cli"/>
+            <property name="php_build_os" value="debian"/>
+            <property name="php_build_release" value="buster"/>
+        </phingcall>
+    </target>
+
+
+    <target name="7.4-apache-ubuntu-bionic">
+        <phingcall target="build">
+            <property name="php_build_version" value="7.4"/>
+            <property name="php_build_type" value="apache"/>
+            <property name="php_build_os" value="ubuntu"/>
+            <property name="php_build_release" value="bionic"/>
+        </phingcall>
+    </target>
+
+
+    <target name="7.4-cli-ubuntu-bionic">
+        <phingcall target="build">
+            <property name="php_build_version" value="7.4"/>
+            <property name="php_build_type" value="cli"/>
+            <property name="php_build_os" value="ubuntu"/>
+            <property name="php_build_release" value="bionic"/>
+        </phingcall>
+    </target>
+
+
+    <target name="configure">
+        <property name="image" value="${php_build_version}-${php_build_type}-${php_build_os}-${php_build_release}" override="true"/>
+    </target>
+
+
+    <target name="build" depends="configure">
+        <exec command="docker build --pull --tag ${image} --file ${php_build_version}/${php_build_type}/${php_build_os}/${php_build_release}/Dockerfile ." passthru="true" checkreturn="true" level="info" dir="${project_root}"/>
+        <exec command="docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${project_root}/tests:/app/tests zemanlx/container-structure-test:v1.8.0-alpine test --image ${image} --config /app/tests/all/tests.yaml" passthru="true" checkreturn="true" level="info" dir="${project_root}"/>
+    </target>
+
+
 </project>
