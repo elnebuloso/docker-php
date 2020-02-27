@@ -20,12 +20,13 @@ RUN echo "install system dependencies" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
+ENV PHP_VERSION 7.4
+
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ENV APP_ENV dev
-ENV PHP_VERSION 7.4
 
 RUN echo "install php" \
     && add-apt-repository ppa:ondrej/php \
@@ -40,12 +41,13 @@ RUN echo "install php" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
-COPY php/all/php/phpext.sh /usr/local/bin/phpext
-COPY php/all/php/docker.ini /etc/php/7.4/mods-available
-COPY php/all/apache/conf-available /etc/apache2/conf-available
-COPY php/all/apache/sites-available /etc/apache2/sites-available
-COPY php/ubuntu/apache/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY php/ubuntu/apache/apache-foreground.sh /usr/local/bin/apache-foreground
+COPY config/all/php/phpext.sh /usr/local/bin/phpext
+COPY config/all/php/docker.ini /etc/php/7.4/mods-available
+COPY config/all/apache/conf-available /etc/apache2/conf-available
+COPY config/all/apache/sites-available /etc/apache2/sites-available
+COPY config/ubuntu/apache/phpext-entrypoint.sh /usr/local/bin/phpext-entrypoint
+COPY config/ubuntu/apache/apache-foreground.sh /usr/local/bin/apache-foreground
+COPY config/ubuntu/php/extensions /opt/php/extensions
 
 RUN echo "configure" \
     && chmod 0644 /etc/php/7.4/mods-available/* \
@@ -61,11 +63,13 @@ RUN echo "configure" \
     && ln -sfT /dev/stdout /var/log/apache2/access.log \
     && ln -sfT /dev/stdout /var/log/apache2/other_vhosts_access.log \
     && rm -rf /var/www/* \
-    && chmod +x /usr/local/bin/*
+    && chmod +x /usr/local/bin/* \
+    && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && chmod +x -R /opt/php/extensions/*
 
 WORKDIR /app/main
 
-ENTRYPOINT ["docker-entrypoint"]
+ENTRYPOINT ["phpext-entrypoint"]
 
 CMD ["apache-foreground"]
 

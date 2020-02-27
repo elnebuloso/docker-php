@@ -20,17 +20,20 @@ RUN echo "install system dependencies" \
     && apt-get -y clean \
     && rm -rf /tmp/*
 
+ENV PHP_VERSION 7.4
+
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ENV APP_ENV dev
-ENV PHP_VERSION 7.4
 
-COPY php/all/php/phpext.sh /usr/local/bin/phpext
-COPY php/all/php/docker.ini $PHP_INI_DIR/conf.d
-COPY php/all/apache/conf-available /etc/apache2/conf-available
-COPY php/all/apache/sites-available /etc/apache2/sites-available
+COPY config/all/php/phpext.sh /usr/local/bin/phpext
+COPY config/all/php/docker.ini $PHP_INI_DIR/conf.d
+COPY config/all/apache/conf-available /etc/apache2/conf-available
+COPY config/all/apache/sites-available /etc/apache2/sites-available
+COPY config/debian/apache/phpext-entrypoint.sh /usr/local/bin/phpext-entrypoint
+COPY config/debian/php/extensions /opt/php/extensions
 
 RUN echo "configure" \
     && chmod 0644 /etc/apache2/conf-available/* \
@@ -41,6 +44,17 @@ RUN echo "configure" \
     && a2enconf expose-env \
     && a2enconf log-formats \
     && rm -rf /var/www/* \
-    && chmod +x /usr/local/bin/*
+    && chmod +x /usr/local/bin/* \
+    && find /opt/php/extensions -type f -name '*.sh' | while read f; do mv "$f" "${f%.sh}"; done \
+    && chmod +x -R /opt/php/extensions/*
+
+RUN echo "install php extensions" \
+    && phpext install opcache
 
 WORKDIR /app/main
+
+ENTRYPOINT ["phpext-entrypoint"]
+
+CMD ["apache2-foreground"]
+
+EXPOSE 80
