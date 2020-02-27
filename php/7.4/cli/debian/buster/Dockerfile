@@ -1,4 +1,5 @@
 FROM php:7.4-cli-buster as prod
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN echo "install system dependencies" \
@@ -24,3 +25,9 @@ ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ENV APP_ENV dev
+
+COPY php/all/php/docker.ini $PHP_INI_DIR/conf.d
+
+WORKDIR /app/main
+
+CMD ["php", "-a"]

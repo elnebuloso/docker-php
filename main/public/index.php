@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <title>elnebuloso/php</title>
+    <title>elnebuloso/php <?php echo phpversion(); ?></title>
 </head>
 <body>
 
@@ -13,7 +13,7 @@
         <tbody>
         <tr class="h">
             <td>
-                <h1 class="p">elnebuloso/php</h1>
+                <h1 class="p">elnebuloso/php <?php echo phpversion(); ?></h1>
             </td>
         </tr>
         </tbody>

@@ -8,11 +8,19 @@
 
 
     <target name="help">
-        <echo message="no action defined"/>
+        <echo message="start"/>
+        <echo message="stop"/>
     </target>
 
 
-    <target name="build">
-
+    <target name="start">
+        <phingcall target="docker:compose:up"/>
     </target>
+
+
+    <target name="stop">
+        <phingcall target="docker:compose:down"/>
+    </target>
+
+
 </project>

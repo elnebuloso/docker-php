@@ -1,4 +1,5 @@
 FROM ubuntu:18.04 as prod
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN echo "install system dependencies" \
@@ -24,3 +25,27 @@ ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ENV APP_ENV dev
+
+RUN echo "install php" \
+    && add-apt-repository ppa:ondrej/php \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        php7.4-cli \
+    && apt-get -y autoremove \
+    && apt-get -y autoclean \
+    && apt-get -y clean \
+    && rm -rf /tmp/*
+
+COPY php/all/php/docker.ini /etc/php/7.4/mods-available/docker.ini
+COPY php/ubuntu/cli/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
+RUN echo "configure" \
+    && chmod 0644 /etc/php/7.4/mods-available/* \
+    && phpenmod docker \
+    && chmod +x /usr/local/bin/*
+
+WORKDIR /app/main
+
+ENTRYPOINT ["docker-entrypoint"]
+
+CMD ["php", "-a"]

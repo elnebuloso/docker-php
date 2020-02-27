@@ -17,11 +17,25 @@ services:
     volumes:
       - ./main:/app/main
 
+  7.4-cli-debian-buster:
+    build:
+      dockerfile: php/7.4/cli/debian/buster/Dockerfile
+      context: .
+    volumes:
+      - ./main:/app/main
+
   7.4-apache-ubuntu-bionic:
     build:
       dockerfile: php/7.4/apache/ubuntu/bionic/Dockerfile
       context: .
     environment:
       VIRTUAL_HOST: 7.4-apache-ubuntu-bionic.127.0.0.1.xip.io
+    volumes:
+      - ./main:/app/main
+
+  7.4-cli-ubuntu-bionic:
+    build:
+      dockerfile: php/7.4/cli/ubuntu/bionic/Dockerfile
+      context: .
     volumes:
       - ./main:/app/main
